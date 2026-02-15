@@ -100,68 +100,68 @@ This roadmap breaks the project into **6 phases**, each building on the previous
 **Goal**: Add persistence, REST API, and WebSocket infrastructure. The game engine can now create/save/resume games.
 
 ### 2.1 Database Setup
-- [ ] Implement SQLModel table models (`Game`, `GamePlayer`, `Hand`, `HandAction`, `ChatMessage`, `CostRecord`)
-- [ ] Implement auto-create tables on startup
-- [ ] Implement database connection management (async SQLite via aiosqlite)
-- [ ] Write tests for model creation and relationships
+- [x] Implement SQLModel table models (`Game`, `GamePlayer`, `Hand`, `HandAction`, `ChatMessage`, `CostRecord`)
+- [x] Implement auto-create tables on startup
+- [x] Implement database connection management (async SQLite via aiosqlite)
+- [x] Write tests for model creation and relationships
 
 ### 2.2 Data Repository
-- [ ] Implement CRUD operations for games (create, get, list, update status)
-- [ ] Implement game player management
-- [ ] Implement hand history persistence (save complete hand after each hand)
-- [ ] Implement action logging
-- [ ] Implement chat message persistence
-- [ ] Implement cost record persistence
-- [ ] Implement game statistics queries
-- [ ] Write tests for all repository operations
+- [x] Implement CRUD operations for games (create, get, list, update status)
+- [x] Implement game player management
+- [x] Implement hand history persistence (save complete hand after each hand)
+- [x] Implement action logging
+- [x] Implement chat message persistence
+- [x] Implement cost record persistence
+- [x] Implement game statistics queries
+- [x] Write tests for all repository operations
 
 ### 2.3 Game State Persistence
-- [ ] Implement save/restore game state to/from database
-- [ ] Ensure game engine can resume from persisted state
-- [ ] Write tests for save/resume round-trip
+- [x] Implement save/restore game state to/from database
+- [x] Ensure game engine can resume from persisted state
+- [x] Write tests for save/resume round-trip
 
 ### 2.4 FastAPI Application Setup
-- [ ] Create FastAPI app with CORS configuration
-- [ ] Implement health check endpoint
-- [ ] Implement configuration endpoint (available providers)
-- [ ] Set up dependency injection for database sessions
+- [x] Create FastAPI app with CORS configuration
+- [x] Implement health check endpoint
+- [x] Implement configuration endpoint (available providers)
+- [x] Set up dependency injection for database sessions
 
 ### 2.5 REST API Endpoints
-- [ ] `GET /api/agents` — list available agents (stub data for now)
-- [ ] `GET /api/games` — list all games
-- [ ] `GET /api/games/{id}` — get game details
-- [ ] `GET /api/games/{id}/hands` — get hand history
-- [ ] `GET /api/games/{id}/hands/{num}` — get specific hand
-- [ ] `POST /api/games` — create new game
-- [ ] `GET /api/config/providers` — available providers
-- [ ] `GET /api/costs` — cost tracking data
-- [ ] Write tests for all endpoints
+- [x] `GET /api/agents` — list available agents (stub data for now)
+- [x] `GET /api/games` — list all games
+- [x] `GET /api/games/{id}` — get game details
+- [x] `GET /api/games/{id}/hands` — get hand history
+- [x] `GET /api/games/{id}/hands/{num}` — get specific hand
+- [x] `POST /api/games` — create new game
+- [x] `GET /api/config/providers` — available providers
+- [x] `GET /api/costs` — cost tracking data
+- [x] Write tests for all endpoints
 
 ### 2.6 WebSocket Handler
-- [ ] Implement WebSocket connection at `/ws/game/{game_id}`
-- [ ] Implement session enforcement (one connection at a time)
-- [ ] Implement server→client message serialization (Pydantic → JSON)
-- [ ] Implement client→server message deserialization and validation
-- [ ] Implement game state broadcast on every state change
-- [ ] Implement connection/disconnection handling (pause/resume game)
-- [ ] Implement timer update broadcasts
-- [ ] Write tests for WebSocket communication
+- [x] Implement WebSocket connection at `/ws/game/{game_id}`
+- [x] Implement session enforcement (one connection at a time)
+- [x] Implement server→client message serialization (Pydantic → JSON)
+- [x] Implement client→server message deserialization and validation
+- [x] Implement game state broadcast on every state change
+- [x] Implement connection/disconnection handling (pause/resume game)
+- [x] Implement timer update broadcasts
+- [x] Write tests for WebSocket communication
 
 ### 2.7 Turn Timer
-- [ ] Implement 30-second countdown timer per turn
-- [ ] Implement timer broadcasting to frontend
-- [ ] Implement auto-check/fold on timeout
-- [ ] Integrate timer with game engine loop
-- [ ] Write tests for timer behavior and timeout actions
+- [x] Implement 30-second countdown timer per turn
+- [x] Implement timer broadcasting to frontend
+- [x] Implement auto-check/fold on timeout
+- [x] Integrate timer with game engine loop
+- [x] Write tests for timer behavior and timeout actions
 
 ### 2.8 Game Coordinator
-- [ ] Implement game coordinator that ties together:
+- [x] Implement game coordinator that ties together:
   - Game engine + WebSocket handler + database persistence
-- [ ] Implement the async game loop:
+- [x] Implement the async game loop:
   - For AI turns: placeholder (random action) for now
   - For human turns: wait for WebSocket message with timer
-- [ ] Implement pause/resume on WebSocket disconnect/reconnect
-- [ ] Write integration tests for the full flow
+- [x] Implement pause/resume on WebSocket disconnect/reconnect
+- [x] Write integration tests for the full flow
 
 ---
 

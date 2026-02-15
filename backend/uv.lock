@@ -1315,6 +1315,7 @@ source = { editable = "." }
 dependencies = [
     { name = "aiosqlite" },
     { name = "fastapi" },
+    { name = "greenlet" },
     { name = "logfire" },
     { name = "pydantic" },
     { name = "pydantic-ai" },
@@ -1339,6 +1340,7 @@ dev = [
 requires-dist = [
     { name = "aiosqlite", specifier = ">=0.20.0" },
     { name = "fastapi", specifier = ">=0.115.0" },
+    { name = "greenlet", specifier = ">=3.3.1" },
     { name = "logfire", specifier = ">=3.0.0" },
     { name = "pydantic", specifier = ">=2.10.0" },
     { name = "pydantic-ai", specifier = ">=0.1.0" },
