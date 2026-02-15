@@ -155,3 +155,5 @@ just format     # Format everything
 - Do not add audio/sound effects
 - Do not optimize for mobile or tablet viewports
 - Do not bundle chat responses with action responses in LLM calls
+- Do not use relative imports in Python — always use absolute imports from the project root
+- Do not group multiple imports on the same line in Python — one import per line
