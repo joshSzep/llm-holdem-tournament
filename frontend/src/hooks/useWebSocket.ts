@@ -3,7 +3,7 @@
  * and dispatches incoming messages to Zustand stores.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { useChatStore } from "../stores/chatStore";
 import { useGameStore } from "../stores/gameStore";
@@ -27,9 +27,6 @@ export function useWebSocket(gameId: number | null): {
   const setError = useGameStore((s) => s.setError);
 
   const addMessage = useChatStore((s) => s.addMessage);
-
-  const gameIdRef = useRef(gameId);
-  gameIdRef.current = gameId;
 
   useEffect(() => {
     if (gameId === null) return;

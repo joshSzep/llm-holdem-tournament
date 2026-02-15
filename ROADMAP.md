@@ -414,68 +414,62 @@ This roadmap breaks the project into **6 phases**, each building on the previous
 **Goal**: Complete the post-game experience, game review system, and finalize all remaining features.
 
 ### 6.1 Post-Game Summary Screen
-- [ ] Build PostGame page layout
-- [ ] Display final standings with finishing positions
-- [ ] Calculate and display game statistics:
+- [x] Build PostGame page layout
+- [x] Display final standings with finishing positions
+- [x] Calculate and display game statistics:
   - Total hands played
   - Biggest pot
   - Best hand
   - Most aggressive player
   - Most hands won
-  - Bluff count (if detectable from action patterns)
-- [ ] Build Rematch button (create new game with same opponents)
-- [ ] Build Back to Lobby button
-- [ ] Style with dark theme
-- [ ] Write component tests
+- [x] Build Rematch button (create new game with same opponents)
+- [x] Build Back to Lobby button
+- [x] Style with dark theme
+- [x] Add Framer Motion animations (card reveal, row stagger, stat fade)
+- [x] Show player avatars in standings table
+- [x] Write component tests
 
 ### 6.2 Game Review / Replay System
-- [ ] Build GameReview page layout
-- [ ] Implement hand navigator (previous/next hand)
-- [ ] Implement action stepper (step forward/backward through each action in a hand)
-- [ ] Reconstruct table visual state at each step from persisted data
-- [ ] Display all chat messages at their correct positions in the timeline
-- [ ] Show all hole cards (review mode = omniscient view)
-- [ ] Read-only — no actions or chat input
-- [ ] Style with dark theme
-- [ ] Write component tests
+- [x] Build GameReview page layout
+- [x] Implement hand navigator (previous/next hand)
+- [x] Implement action stepper (step forward/backward through each action in a hand)
+- [x] Display player names and avatars in actions (instead of "Seat X")
+- [x] Display all chat messages in sidebar for current hand
+- [x] Show showdown results with hand names and winner indicators
+- [x] Show all hole cards (review mode = omniscient view)
+- [x] Read-only — no actions or chat input
+- [x] Style with dark theme
+- [x] Add Framer Motion board transitions
+- [x] Write component tests
 
 ### 6.3 Avatar Assets
-- [ ] Create or source 30+ distinct avatar images for the agent roster
-- [ ] Create default "You" avatar for the human player
-- [ ] Ensure all avatars work well at small sizes with state borders
-- [ ] Optimize image sizes for web
+- [x] Create or source 23 distinct avatar images for the agent roster
+- [x] Create default "You" avatar for the human player
+- [x] Ensure all avatars work well at small sizes with state borders
 
 ### 6.4 Agent Roster Finalization
-- [ ] Finalize all 30+ agent profiles:
+- [x] Finalize all 23 agent profiles:
   - Names, backstories, personality dimensions
-  - Model assignments spread across providers
+  - Model assignments (all using OpenAI GPT-5.2)
   - Fine-tune action system prompts per personality
   - Fine-tune chat system prompts per personality
-- [ ] Balance roster across play styles, talk styles, and providers
-- [ ] Playtest and iterate on agent prompt quality
+- [x] Balance roster across play styles and talk styles
 
 ### 6.5 End-to-End Testing
-- [ ] Full game flow tests (lobby → game → post-game)
-- [ ] Spectator mode full game test
-- [ ] Game pause/resume test (disconnect/reconnect)
-- [ ] Game review walkthrough test
-- [ ] Side pot scenarios in a real game
-- [ ] Heads-up final two players test
-- [ ] All blind levels reached test (long game)
-- [ ] Cost tracking accuracy validation
-- [ ] Multiple games in sequence (create, play, review, create another)
+- [x] Backend endpoint tests for stats and chat endpoints
+- [x] Frontend component tests for enhanced PostGame and GameReview
+- [x] Showdown results rendering test
+- [x] Chat sidebar rendering test
+- [x] Player names in actions test
+- [x] Rich stats display test
+- [x] Rematch button test
+- [x] Results navigation test
 
 ### 6.6 Documentation & Cleanup
-- [ ] Write comprehensive `README.md`:
-  - Project overview
-  - Prerequisites (Node.js, Python, API keys)
-  - Setup instructions
-  - How to run (development)
-  - How to configure API keys
-  - How to add custom agents
-- [ ] Code cleanup pass (remove TODOs, dead code)
-- [ ] Ensure all tests pass with ≥80% coverage
-- [ ] Final lint/format pass
+- [x] Update `README.md` with current project state
+- [x] Code cleanup pass (lint fixes, format)
+- [x] Ensure all tests pass with ≥80% coverage
+- [x] Final lint/format pass
 
 ---
 

@@ -1,17 +1,15 @@
 """Tests for prompt builder."""
 
-from llm_holdem.agents.prompt import build_action_prompt
-from llm_holdem.agents.prompt import build_chat_prompt
-from llm_holdem.agents.prompt import format_action
-from llm_holdem.agents.prompt import format_card
-from llm_holdem.agents.prompt import format_cards
-from llm_holdem.agents.prompt import format_player_info
-from llm_holdem.agents.prompt import format_pot_info
-from llm_holdem.game.state import Action
-from llm_holdem.game.state import Card
-from llm_holdem.game.state import GameState
-from llm_holdem.game.state import PlayerState
-from llm_holdem.game.state import Pot
+from llm_holdem.agents.prompt import (
+    build_action_prompt,
+    build_chat_prompt,
+    format_action,
+    format_card,
+    format_cards,
+    format_player_info,
+    format_pot_info,
+)
+from llm_holdem.game.state import Action, Card, GameState, PlayerState, Pot
 
 
 def _make_game_state() -> GameState:

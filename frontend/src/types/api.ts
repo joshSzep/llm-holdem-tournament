@@ -108,6 +108,32 @@ export interface CostListResponse {
   records: CostRecord[];
 }
 
+// ─── Game Stats Types ────────────────────────────────
+
+export interface GameStatsResponse {
+  total_hands: number;
+  biggest_pot: number;
+  biggest_pot_hand: number;
+  best_hand_name: string;
+  best_hand_player: string;
+  best_hand_number: number;
+  most_aggressive_name: string;
+  most_aggressive_raises: number;
+  most_hands_won_name: string;
+  most_hands_won_count: number;
+}
+
+// ─── Chat Types ──────────────────────────────────────
+
+export interface ChatMessageRecord {
+  seat_index: number;
+  name: string;
+  message: string;
+  hand_number: number | null;
+  timestamp: string;
+  trigger_event: string;
+}
+
 // ─── Provider Types ──────────────────────────────────
 
 export interface ProvidersResponse {

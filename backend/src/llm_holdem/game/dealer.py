@@ -4,9 +4,7 @@ import logging
 import random
 from collections.abc import Sequence
 
-from llm_holdem.game.state import Card
-from llm_holdem.game.state import RANKS
-from llm_holdem.game.state import SUITS
+from llm_holdem.game.state import RANKS, SUITS, Card
 
 logger = logging.getLogger(__name__)
 

@@ -1,11 +1,9 @@
 """Tournament manager — orchestrates multi-hand tournament play."""
 
 import logging
-from datetime import datetime
-from datetime import timezone
+from datetime import UTC, datetime
 
-from pydantic import BaseModel
-from pydantic import Field
+from pydantic import BaseModel, Field
 
 from llm_holdem.game.blinds import BlindManager
 from llm_holdem.game.engine import GameEngine
@@ -108,7 +106,7 @@ class TournamentManager:
 
     def start(self) -> None:
         """Start the tournament."""
-        self._stats.started_at = datetime.now(timezone.utc).isoformat()
+        self._stats.started_at = datetime.now(UTC).isoformat()
         self._engine.status = "active"
         logger.info(
             "Tournament started with %d players",
@@ -207,7 +205,7 @@ class TournamentManager:
 
     def _finalize(self) -> None:
         """Finalize the tournament — compute standings and result."""
-        self._stats.ended_at = datetime.now(timezone.utc).isoformat()
+        self._stats.ended_at = datetime.now(UTC).isoformat()
         self._engine.status = "completed"
 
         # The winner is the last player standing

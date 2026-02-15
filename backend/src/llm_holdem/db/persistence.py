@@ -2,27 +2,24 @@
 
 import json
 import logging
-from datetime import datetime
-from datetime import timezone
+from datetime import UTC, datetime
 
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from llm_holdem.db.repository import create_game
-from llm_holdem.db.repository import create_game_player
-from llm_holdem.db.repository import create_hand
-from llm_holdem.db.repository import create_hand_action
-from llm_holdem.db.repository import get_game_by_uuid
-from llm_holdem.db.repository import get_game_players
-from llm_holdem.db.repository import get_hands_for_game
-from llm_holdem.db.repository import get_actions_for_hand
-from llm_holdem.db.repository import update_game_status
-from llm_holdem.db.repository import update_game_player
-from llm_holdem.db.repository import update_hand
+from llm_holdem.db.repository import (
+    create_game,
+    create_game_player,
+    create_hand,
+    create_hand_action,
+    get_game_by_uuid,
+    get_game_players,
+    get_hands_for_game,
+    update_game_player,
+    update_game_status,
+    update_hand,
+)
 from llm_holdem.game.blinds import BlindManager
 from llm_holdem.game.engine import GameEngine
-from llm_holdem.game.state import Action
-from llm_holdem.game.state import Card
-from llm_holdem.game.state import GameState
 from llm_holdem.game.state import PlayerState
 
 logger = logging.getLogger(__name__)
@@ -155,7 +152,7 @@ async def save_game_result(
         status="completed",
         winner_seat=winner_seat,
         total_hands=engine.hand_number,
-        finished_at=datetime.now(timezone.utc).isoformat(),
+        finished_at=datetime.now(UTC).isoformat(),
     )
 
     # Update all player final states

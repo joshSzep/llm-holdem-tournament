@@ -26,6 +26,7 @@ export function useTimer(): TimerState {
   // Sync with server timer updates
   useEffect(() => {
     if (serverTimer) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional sync from Zustand store
       setLocalSeconds(serverTimer.seconds_remaining);
     } else {
       setLocalSeconds(0);

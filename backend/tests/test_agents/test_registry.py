@@ -1,6 +1,5 @@
 """Tests for agent registry."""
 
-import pytest
 
 from llm_holdem.agents.profiles import ALL_AGENT_PROFILES
 from llm_holdem.agents.registry import AgentRegistry
@@ -48,8 +47,8 @@ class TestAgentRegistry:
         registry = AgentRegistry(settings=settings)
         assert "openai" in registry.available_providers
         assert "anthropic" in registry.available_providers
-        # Should have both openai and anthropic agents (plus ollama)
-        assert len(registry.available_profiles) > len(
+        # All profiles are openai, so available count equals openai count
+        assert len(registry.available_profiles) == len(
             registry.get_profiles_by_provider("openai")
         )
 
@@ -82,16 +81,28 @@ class TestAgentRegistry:
         # OpenAI agent should be available
         profile = registry.get_available_profile("tight-tony")
         assert profile is not None
-        # Anthropic agent should NOT be available (no key)
+        # All agents are openai, so bluff-betty is also available with openai key
         profile = registry.get_available_profile("bluff-betty")
+        assert profile is not None
+
+    def test_get_available_profile_no_key(self) -> None:
+        settings = _make_settings()
+        registry = AgentRegistry(settings=settings)
+        # Without openai key, no agents are available
+        profile = registry.get_available_profile("tight-tony")
         assert profile is None
 
     def test_is_agent_available(self) -> None:
         settings = _make_settings(openai_api_key="sk-test")
         registry = AgentRegistry(settings=settings)
         assert registry.is_agent_available("tight-tony") is True
-        assert registry.is_agent_available("bluff-betty") is False
+        assert registry.is_agent_available("bluff-betty") is True
         assert registry.is_agent_available("nonexistent") is False
+
+    def test_is_agent_available_no_key(self) -> None:
+        settings = _make_settings()
+        registry = AgentRegistry(settings=settings)
+        assert registry.is_agent_available("tight-tony") is False
 
     def test_all_profiles_returns_all(self) -> None:
         settings = _make_settings()

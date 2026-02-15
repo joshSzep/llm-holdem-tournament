@@ -3,35 +3,41 @@
 import logging
 import uuid
 
-from fastapi import APIRouter
-from fastapi import Depends
-from fastapi import HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from llm_holdem.agents.registry import AgentRegistry
-from llm_holdem.api.schemas import ActionSummary
-from llm_holdem.api.schemas import AgentListResponse
-from llm_holdem.api.schemas import AgentSummary
-from llm_holdem.api.schemas import CostListResponse
-from llm_holdem.api.schemas import CostRecordSummary
-from llm_holdem.api.schemas import CostSummaryResponse
-from llm_holdem.api.schemas import CreateGameRequest
-from llm_holdem.api.schemas import CreateGameResponse
-from llm_holdem.api.schemas import GameDetail
-from llm_holdem.api.schemas import GamePlayerSummary
-from llm_holdem.api.schemas import GameSummary
-from llm_holdem.api.schemas import HandDetail
-from llm_holdem.api.schemas import HandSummary
-from llm_holdem.db.repository import create_game
-from llm_holdem.db.repository import create_game_player
-from llm_holdem.db.repository import get_actions_for_hand
-from llm_holdem.db.repository import get_cost_records
-from llm_holdem.db.repository import get_cost_summary
-from llm_holdem.db.repository import get_game_by_id
-from llm_holdem.db.repository import get_game_players
-from llm_holdem.db.repository import get_hand_by_number
-from llm_holdem.db.repository import get_hands_for_game
-from llm_holdem.db.repository import list_games
+from llm_holdem.api.schemas import (
+    ActionSummary,
+    AgentListResponse,
+    AgentSummary,
+    ChatMessageResponse,
+    CostListResponse,
+    CostRecordSummary,
+    CostSummaryResponse,
+    CreateGameRequest,
+    CreateGameResponse,
+    GameDetail,
+    GamePlayerSummary,
+    GameStatsResponse,
+    GameSummary,
+    HandDetail,
+    HandSummary,
+)
+from llm_holdem.db.repository import (
+    create_game,
+    create_game_player,
+    get_actions_for_hand,
+    get_chat_messages,
+    get_cost_records,
+    get_cost_summary,
+    get_game_by_id,
+    get_game_players,
+    get_game_stats,
+    get_hand_by_number,
+    get_hands_for_game,
+    list_games,
+)
 from llm_holdem.main import get_session
 
 logger = logging.getLogger(__name__)
@@ -45,7 +51,7 @@ _agent_registry: AgentRegistry | None = None
 
 def get_agent_registry() -> AgentRegistry:
     """Get or create the agent registry singleton."""
-    global _agent_registry  # noqa: PLW0603
+    global _agent_registry
     if _agent_registry is None:
         _agent_registry = AgentRegistry()
     return _agent_registry
@@ -53,7 +59,7 @@ def get_agent_registry() -> AgentRegistry:
 
 def set_agent_registry(registry: AgentRegistry) -> None:
     """Set the agent registry (for testing)."""
-    global _agent_registry  # noqa: PLW0603
+    global _agent_registry
     _agent_registry = registry
 
 
@@ -284,6 +290,44 @@ async def get_game_hand(
 
 
 # ─── Cost Routes ─────────────────────────────────────
+
+
+@router.get("/games/{game_id}/stats", response_model=GameStatsResponse)
+async def get_game_stats_endpoint(
+    game_id: int,
+    session: AsyncSession = Depends(get_session),
+) -> GameStatsResponse:
+    """Get rich game statistics for post-game summary."""
+    game = await get_game_by_id(session, game_id)
+    if game is None:
+        raise HTTPException(status_code=404, detail="Game not found")
+
+    stats = await get_game_stats(session, game.id)
+    return GameStatsResponse(**stats)
+
+
+@router.get("/games/{game_id}/chat", response_model=list[ChatMessageResponse])
+async def get_game_chat(
+    game_id: int,
+    session: AsyncSession = Depends(get_session),
+) -> list[ChatMessageResponse]:
+    """Get all chat messages for a game (for game review)."""
+    game = await get_game_by_id(session, game_id)
+    if game is None:
+        raise HTTPException(status_code=404, detail="Game not found")
+
+    messages = await get_chat_messages(session, game.id, limit=500)
+    return [
+        ChatMessageResponse(
+            seat_index=m.seat_index,
+            name=m.name,
+            message=m.message,
+            hand_number=m.hand_number,
+            timestamp=m.timestamp,
+            trigger_event=m.trigger_event,
+        )
+        for m in messages
+    ]
 
 
 @router.get("/costs", response_model=CostListResponse)

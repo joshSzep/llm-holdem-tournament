@@ -1,23 +1,16 @@
 """FastAPI application entry point."""
 
-import json
 import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
-from fastapi import Depends
-from fastapi import FastAPI
-from fastapi import WebSocket
-from fastapi import WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from llm_holdem.api.websocket_handler import connection_manager
-from llm_holdem.api.websocket_handler import parse_client_message
+from llm_holdem.api.websocket_handler import connection_manager, parse_client_message
 from llm_holdem.config import get_settings
-from llm_holdem.db.database import close_db
-from llm_holdem.db.database import get_engine
-from llm_holdem.db.database import init_db
+from llm_holdem.db.database import close_db, get_engine, init_db
 from llm_holdem.logging_config import setup_logging
 
 logger = logging.getLogger(__name__)
@@ -59,7 +52,7 @@ app.add_middleware(
 )
 
 
-async def get_session() -> AsyncGenerator[AsyncSession, None]:
+async def get_session() -> AsyncGenerator[AsyncSession]:
     """FastAPI dependency that provides an async database session.
 
     Yields:

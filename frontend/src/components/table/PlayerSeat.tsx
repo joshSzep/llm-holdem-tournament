@@ -175,7 +175,7 @@ export function PlayerSeat({
             initial="initial"
             animate="animate"
             exit="exit"
-            key={`action-${lastAction}-${Date.now()}`}
+            key={`action-${lastAction}`}
           >
             {lastAction.replace("_", " ")}
           </motion.div>

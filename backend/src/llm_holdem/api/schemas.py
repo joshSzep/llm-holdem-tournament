@@ -1,8 +1,6 @@
 """API request and response schemas."""
 
-from pydantic import BaseModel
-from pydantic import Field
-
+from pydantic import BaseModel, Field
 
 # ─── Agent Schemas ────────────────────────────────────
 
@@ -163,6 +161,38 @@ class CostListResponse(BaseModel):
 
     summary: CostSummaryResponse
     records: list[CostRecordSummary] = Field(default_factory=list)
+
+
+# ─── Game Stats Schemas ───────────────────────────────
+
+
+class GameStatsResponse(BaseModel):
+    """Rich game statistics for post-game summary."""
+
+    total_hands: int = 0
+    biggest_pot: int = 0
+    biggest_pot_hand: int = 0
+    best_hand_name: str = ""
+    best_hand_player: str = ""
+    best_hand_number: int = 0
+    most_aggressive_name: str = ""
+    most_aggressive_raises: int = 0
+    most_hands_won_name: str = ""
+    most_hands_won_count: int = 0
+
+
+# ─── Chat Schemas ─────────────────────────────────────
+
+
+class ChatMessageResponse(BaseModel):
+    """A chat message record for game review."""
+
+    seat_index: int
+    name: str = ""
+    message: str = ""
+    hand_number: int | None = None
+    timestamp: str = ""
+    trigger_event: str = ""
 
 
 # ─── Provider Schemas ─────────────────────────────────

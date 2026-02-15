@@ -5,8 +5,7 @@ on model pricing, and persists records to the database.
 """
 
 import logging
-from datetime import datetime
-from datetime import timezone
+from datetime import UTC, datetime
 
 from pydantic_ai.usage import Usage
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -100,7 +99,7 @@ async def record_cost(
         input_tokens=usage.input_tokens,
         output_tokens=usage.output_tokens,
         estimated_cost=cost,
-        timestamp=datetime.now(timezone.utc).isoformat(),
+        timestamp=datetime.now(UTC).isoformat(),
     )
 
     created = await create_cost_record(session, record)

@@ -2,11 +2,9 @@
 
 import logging
 
-from llm_holdem.agents.profiles import ALL_AGENT_PROFILES
-from llm_holdem.agents.profiles import AGENT_PROFILES_BY_ID
+from llm_holdem.agents.profiles import AGENT_PROFILES_BY_ID, ALL_AGENT_PROFILES
 from llm_holdem.agents.schemas import AgentProfile
-from llm_holdem.config import Settings
-from llm_holdem.config import get_settings
+from llm_holdem.config import Settings, get_settings
 
 logger = logging.getLogger(__name__)
 

@@ -2,10 +2,7 @@
 
 import asyncio
 
-import pytest
-
-from llm_holdem.game.timer import TurnTimer
-from llm_holdem.game.timer import get_timeout_action
+from llm_holdem.game.timer import TurnTimer, get_timeout_action
 
 
 class TestGetTimeoutAction:

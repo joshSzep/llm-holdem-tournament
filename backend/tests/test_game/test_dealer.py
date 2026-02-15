@@ -1,9 +1,7 @@
 """Tests for card and deck operations."""
 
 from llm_holdem.game.dealer import Deck
-from llm_holdem.game.state import Card
-from llm_holdem.game.state import RANKS
-from llm_holdem.game.state import SUITS
+from llm_holdem.game.state import RANKS, SUITS, Card
 
 
 class TestCard:

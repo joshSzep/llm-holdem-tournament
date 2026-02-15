@@ -2,9 +2,7 @@
 
 import pytest
 
-from llm_holdem.game.evaluator import compare_hands
-from llm_holdem.game.evaluator import determine_winners
-from llm_holdem.game.evaluator import evaluate_hand
+from llm_holdem.game.evaluator import compare_hands, determine_winners, evaluate_hand
 from llm_holdem.game.state import Card
 
 

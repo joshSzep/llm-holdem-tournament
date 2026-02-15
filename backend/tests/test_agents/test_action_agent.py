@@ -1,20 +1,13 @@
 """Tests for action agent — with mocked LLM responses."""
 
-from unittest.mock import AsyncMock
-from unittest.mock import MagicMock
-from unittest.mock import patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from pydantic_ai.usage import Usage
 
-from llm_holdem.agents.action_agent import MAX_RETRIES
-from llm_holdem.agents.action_agent import _validate_action
-from llm_holdem.agents.action_agent import get_ai_action
-from llm_holdem.agents.schemas import AgentProfile
-from llm_holdem.agents.schemas import PokerAction
-from llm_holdem.game.state import Card
-from llm_holdem.game.state import GameState
-from llm_holdem.game.state import PlayerState
+from llm_holdem.agents.action_agent import _validate_action, get_ai_action
+from llm_holdem.agents.schemas import AgentProfile, PokerAction
+from llm_holdem.game.state import Card, GameState, PlayerState
 
 
 def _make_profile() -> AgentProfile:

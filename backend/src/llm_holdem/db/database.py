@@ -3,8 +3,7 @@
 import logging
 from pathlib import Path
 
-from sqlalchemy.ext.asyncio import AsyncEngine
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 

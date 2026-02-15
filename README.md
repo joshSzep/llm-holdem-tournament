@@ -4,7 +4,7 @@ A Texas Hold'Em poker web application where you play against AI opponents powere
 
 ## What Is This?
 
-LLM Hold'Em Tournament pits you against a roster of 30+ AI poker players, each with a unique personality, play style, and backstory. Every opponent is driven by a real LLM (GPT-4o, Claude, Gemini, Mistral, and more), making decisions and trash-talking at the table just like a human would.
+LLM Hold'Em Tournament pits you against a roster of 23 AI poker players, each with a unique personality, play style, and backstory. Every opponent is driven by a real LLM (currently OpenAI GPT-5.2, with the architecture supporting Anthropic, Google, Groq, Mistral, Ollama, and more), making decisions and trash-talking at the table just like a human would.
 
 **Play Mode** — Take a seat and play heads-up or at a full table against 1–5 AI opponents.
 
@@ -14,8 +14,8 @@ All games are Sit-and-Go tournaments with 2,000 starting chips and escalating bl
 
 ## Features
 
-- **30+ AI opponents** with distinct personalities — aggressive bluffers, cautious grinders, trash-talkers, silent assassins, and everything in between
-- **Model-agnostic** — opponents run on OpenAI, Anthropic, Google, Groq, Mistral, Ollama, and more via Pydantic AI
+- **23 AI opponents** with distinct personalities — aggressive bluffers, cautious grinders, trash-talkers, silent assassins, and everything in between
+- **Model-agnostic architecture** — agents can run on OpenAI, Anthropic, Google, Groq, Mistral, Ollama, and more via Pydantic AI (currently all configured for GPT-5.2)
 - **Reactive table talk** — AI players banter, react to big hands, and respond to your chat messages organically
 - **Full poker rules** — side pots, split pots, heads-up play, proper blind structure, hand evaluation
 - **Animated UI** — card dealing, chip movements, tiered showdown animations (a royal flush looks a lot more exciting than a pair)

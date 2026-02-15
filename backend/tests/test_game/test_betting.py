@@ -2,8 +2,7 @@
 
 import pytest
 
-from llm_holdem.game.betting import BettingManager
-from llm_holdem.game.betting import InvalidActionError
+from llm_holdem.game.betting import BettingManager, InvalidActionError
 from llm_holdem.game.state import PlayerState
 
 

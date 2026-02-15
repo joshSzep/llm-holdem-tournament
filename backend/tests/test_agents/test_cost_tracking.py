@@ -1,10 +1,8 @@
 """Tests for cost tracking module."""
 
-import pytest
 from pydantic_ai.usage import Usage
 
-from llm_holdem.agents.cost_tracking import MODEL_PRICING
-from llm_holdem.agents.cost_tracking import estimate_cost
+from llm_holdem.agents.cost_tracking import MODEL_PRICING, estimate_cost
 
 
 class TestModelPricing:

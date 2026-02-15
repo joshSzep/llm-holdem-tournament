@@ -1,22 +1,20 @@
 """WebSocket handler for real-time game communication."""
 
-import json
 import logging
 from typing import Any
 
 from fastapi import WebSocket
-from fastapi import WebSocketDisconnect
 from pydantic import ValidationError
 
-from llm_holdem.api.messages import ChatMessageIn
-from llm_holdem.api.messages import ClientMessage
-from llm_holdem.api.messages import ErrorMessage
-from llm_holdem.api.messages import GamePausedMessage
-from llm_holdem.api.messages import GameResumedMessage
-from llm_holdem.api.messages import GameStateMessage
-from llm_holdem.api.messages import PauseGameMessage
-from llm_holdem.api.messages import PlayerActionMessage
-from llm_holdem.api.messages import ServerMessage
+from llm_holdem.api.messages import (
+    ChatMessageIn,
+    ClientMessage,
+    ErrorMessage,
+    GameStateMessage,
+    PauseGameMessage,
+    PlayerActionMessage,
+    ServerMessage,
+)
 from llm_holdem.game.state import GameState
 
 logger = logging.getLogger(__name__)

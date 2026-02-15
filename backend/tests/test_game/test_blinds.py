@@ -1,7 +1,6 @@
 """Tests for blind management."""
 
-from llm_holdem.game.blinds import BlindManager
-from llm_holdem.game.blinds import DEFAULT_BLIND_LEVELS
+from llm_holdem.game.blinds import DEFAULT_BLIND_LEVELS, BlindManager
 
 
 class TestBlindManagerBasics:

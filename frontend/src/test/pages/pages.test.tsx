@@ -29,6 +29,19 @@ vi.mock("../../services/api", () => ({
   createGame: vi.fn().mockResolvedValue({ game_id: 1 }),
   fetchHands: vi.fn().mockResolvedValue([]),
   fetchHand: vi.fn().mockResolvedValue(null),
+  fetchGameStats: vi.fn().mockResolvedValue({
+    total_hands: 0,
+    biggest_pot: 0,
+    biggest_pot_hand: 0,
+    best_hand_name: "",
+    best_hand_player: "",
+    best_hand_number: 0,
+    most_aggressive_name: "",
+    most_aggressive_raises: 0,
+    most_hands_won_name: "",
+    most_hands_won_count: 0,
+  }),
+  fetchGameChat: vi.fn().mockResolvedValue([]),
   fetchCosts: vi.fn().mockResolvedValue({
     summary: { total_cost: 0, total_input_tokens: 0, total_output_tokens: 0, call_count: 0 },
     records: [],
@@ -52,11 +65,13 @@ import { PostGame } from "../../pages/PostGame/PostGame";
 import { GameReview } from "../../pages/GameReview/GameReview";
 import { useGameStore } from "../../stores/gameStore";
 import { useLobbyStore } from "../../stores/lobbyStore";
-import { fetchGameDetail, fetchHands, fetchHand } from "../../services/api";
+import { fetchGameDetail, fetchHands, fetchHand, fetchGameStats, fetchGameChat } from "../../services/api";
 
 const mockFetchGameDetail = vi.mocked(fetchGameDetail);
 const mockFetchHands = vi.mocked(fetchHands);
 const mockFetchHand = vi.mocked(fetchHand);
+const mockFetchGameStats = vi.mocked(fetchGameStats);
+const mockFetchGameChat = vi.mocked(fetchGameChat);
 
 // ─── PostGame ────────────────────────────────────────
 
@@ -185,6 +200,103 @@ describe("PostGame", () => {
       expect(
         container.querySelector(".post-game__stats"),
       ).toBeInTheDocument();
+    });
+  });
+
+  it("shows rich stats from fetchGameStats", async () => {
+    mockFetchGameStats.mockResolvedValue({
+      total_hands: 42,
+      biggest_pot: 5000,
+      biggest_pot_hand: 7,
+      best_hand_name: "Royal Flush",
+      best_hand_player: "TestBot",
+      best_hand_number: 12,
+      most_aggressive_name: "AggroBot",
+      most_aggressive_raises: 30,
+      most_hands_won_name: "WinBot",
+      most_hands_won_count: 15,
+    });
+
+    const { container } = render(
+      <MemoryRouter>
+        <PostGame />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(container.querySelector(".post-game__stats")).toBeInTheDocument();
+    });
+
+    const statValues = container.querySelectorAll(".post-game__stat-value");
+    const values = Array.from(statValues).map((el) => el.textContent);
+    expect(values).toContain("42");
+    expect(values).toContain("5,000");
+    expect(values).toContain("Royal Flush");
+  });
+
+  it("renders avatars in standings", () => {
+    useGameStore.setState({
+      gameOver: {
+        winner_seat: 0,
+        winner_name: "Bot",
+        final_standings: [
+          { seat_index: 0, name: "Bot", final_chips: 2000, finish_position: 1 },
+        ],
+      },
+    });
+
+    mockFetchGameDetail.mockResolvedValue({
+      id: 1,
+      game_uuid: "uuid-1",
+      mode: "player",
+      status: "completed",
+      total_hands: 1,
+      created_at: "2024-01-01T00:00:00",
+      finished_at: "2024-01-01T01:00:00",
+      winner_seat: 0,
+      config_json: "{}",
+      players: [
+        { seat_index: 0, agent_id: "b1", name: "Bot", avatar_url: "/avatars/b1.png", starting_chips: 1000, final_chips: 2000, finish_position: 1, is_human: false },
+      ],
+    });
+
+    const { container } = render(
+      <MemoryRouter>
+        <PostGame />
+      </MemoryRouter>,
+    );
+
+    const avatarCells = container.querySelectorAll(".post-game__avatar-cell");
+    expect(avatarCells.length).toBeGreaterThan(0);
+  });
+
+  it("renders rematch button", async () => {
+    mockFetchGameDetail.mockResolvedValue({
+      id: 1,
+      game_uuid: "uuid-1",
+      mode: "player",
+      status: "completed",
+      total_hands: 10,
+      created_at: "2024-01-01T00:00:00",
+      finished_at: "2024-01-01T01:00:00",
+      winner_seat: 0,
+      config_json: "{}",
+      players: [
+        { seat_index: 0, agent_id: null, name: "You", avatar_url: "/a.png", starting_chips: 1000, final_chips: 2000, finish_position: 1, is_human: true },
+        { seat_index: 1, agent_id: "bot1", name: "Bot", avatar_url: "/b.png", starting_chips: 1000, final_chips: 0, finish_position: 2, is_human: false },
+      ],
+    });
+
+    const { container } = render(
+      <MemoryRouter>
+        <PostGame />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      const rematchBtn = container.querySelector(".post-game__btn--accent");
+      expect(rematchBtn).toBeInTheDocument();
+      expect(rematchBtn).not.toBeDisabled();
     });
   });
 });
@@ -409,6 +521,203 @@ describe("GameReview", () => {
 
     fireEvent.click(container.querySelector(".game-review__back-btn")!);
     expect(mockNavigate).toHaveBeenCalledWith("/");
+  });
+
+  it("shows player names in actions when game detail loaded", async () => {
+    mockFetchGameDetail.mockResolvedValue({
+      id: 1,
+      game_uuid: "uuid-1",
+      mode: "player",
+      status: "completed",
+      total_hands: 1,
+      created_at: "2024-01-01T00:00:00",
+      finished_at: "2024-01-01T01:00:00",
+      winner_seat: 0,
+      config_json: "{}",
+      players: [
+        { seat_index: 0, agent_id: null, name: "You", avatar_url: "/a.png", starting_chips: 1000, final_chips: 2000, finish_position: 1, is_human: true },
+        { seat_index: 1, agent_id: "bot1", name: "TestBot", avatar_url: "/b.png", starting_chips: 1000, final_chips: 0, finish_position: 2, is_human: false },
+      ],
+    });
+    mockFetchHands.mockResolvedValue([
+      { id: 1, hand_number: 1, dealer_position: 0, small_blind: 10, big_blind: 20, phase: "showdown", community_cards_json: "[]", pots_json: "[]", winners_json: "[]" },
+    ]);
+    mockFetchHand.mockResolvedValue({
+      id: 1,
+      hand_number: 1,
+      dealer_position: 0,
+      small_blind: 10,
+      big_blind: 20,
+      phase: "showdown",
+      community_cards_json: "[]",
+      pots_json: "[]",
+      winners_json: "[]",
+      showdown_json: null,
+      actions: [
+        { seat_index: 0, action_type: "call", amount: 20, phase: "pre_flop", sequence: 0, timestamp: "2024-01-01T00:00:00" },
+        { seat_index: 1, action_type: "raise", amount: 40, phase: "pre_flop", sequence: 1, timestamp: "2024-01-01T00:00:01" },
+      ],
+    });
+
+    const { container } = render(
+      <MemoryRouter>
+        <GameReview />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(container.querySelector(".game-review__action-list")).toBeInTheDocument();
+    });
+
+    const playerNames = container.querySelectorAll(".game-review__action-player");
+    expect(playerNames[0]).toHaveTextContent("You");
+    expect(playerNames[1]).toHaveTextContent("TestBot");
+  });
+
+  it("renders showdown results", async () => {
+    mockFetchGameDetail.mockResolvedValue({
+      id: 1,
+      game_uuid: "uuid-1",
+      mode: "player",
+      status: "completed",
+      total_hands: 1,
+      created_at: "2024-01-01T00:00:00",
+      finished_at: "2024-01-01T01:00:00",
+      winner_seat: 0,
+      config_json: "{}",
+      players: [
+        { seat_index: 0, agent_id: null, name: "Alice", avatar_url: "/a.png", starting_chips: 1000, final_chips: 2000, finish_position: 1, is_human: true },
+        { seat_index: 1, agent_id: "bot1", name: "Bob", avatar_url: "/b.png", starting_chips: 1000, final_chips: 0, finish_position: 2, is_human: false },
+      ],
+    });
+    mockFetchHands.mockResolvedValue([
+      { id: 1, hand_number: 1, dealer_position: 0, small_blind: 10, big_blind: 20, phase: "showdown", community_cards_json: "[]", pots_json: "[]", winners_json: "[]" },
+    ]);
+    mockFetchHand.mockResolvedValue({
+      id: 1,
+      hand_number: 1,
+      dealer_position: 0,
+      small_blind: 10,
+      big_blind: 20,
+      phase: "showdown",
+      community_cards_json: "[]",
+      pots_json: "[]",
+      winners_json: "[]",
+      showdown_json: JSON.stringify({
+        winners: [0],
+        hand_results: [
+          { player_index: 0, hand_rank: 1, hand_name: "Straight Flush", hand_description: "5h-6h-7h-8h-9h" },
+          { player_index: 1, hand_rank: 5, hand_name: "Two Pair", hand_description: "9s-9c-7d-7s" },
+        ],
+      }),
+      actions: [],
+    });
+
+    const { container } = render(
+      <MemoryRouter>
+        <GameReview />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(container.querySelector(".game-review__showdown")).toBeInTheDocument();
+    });
+
+    const showdownItems = container.querySelectorAll(".game-review__showdown-item");
+    expect(showdownItems).toHaveLength(2);
+    expect(showdownItems[0]).toHaveClass("game-review__showdown-item--winner");
+
+    const handNames = container.querySelectorAll(".game-review__showdown-hand");
+    expect(handNames[0]).toHaveTextContent("Straight Flush");
+    expect(handNames[1]).toHaveTextContent("Two Pair");
+  });
+
+  it("renders chat sidebar for current hand", async () => {
+    mockFetchGameDetail.mockResolvedValue({
+      id: 1,
+      game_uuid: "uuid-1",
+      mode: "player",
+      status: "completed",
+      total_hands: 1,
+      created_at: "2024-01-01T00:00:00",
+      finished_at: "2024-01-01T01:00:00",
+      winner_seat: 0,
+      config_json: "{}",
+      players: [
+        { seat_index: 0, agent_id: null, name: "You", avatar_url: "/a.png", starting_chips: 1000, final_chips: 2000, finish_position: 1, is_human: true },
+        { seat_index: 1, agent_id: "bot1", name: "ChatBot", avatar_url: "/b.png", starting_chips: 1000, final_chips: 0, finish_position: 2, is_human: false },
+      ],
+    });
+    mockFetchHands.mockResolvedValue([
+      { id: 1, hand_number: 1, dealer_position: 0, small_blind: 10, big_blind: 20, phase: "showdown", community_cards_json: "[]", pots_json: "[]", winners_json: "[]" },
+    ]);
+    mockFetchHand.mockResolvedValue({
+      id: 1,
+      hand_number: 1,
+      dealer_position: 0,
+      small_blind: 10,
+      big_blind: 20,
+      phase: "showdown",
+      community_cards_json: "[]",
+      pots_json: "[]",
+      winners_json: "[]",
+      showdown_json: null,
+      actions: [],
+    });
+    mockFetchGameChat.mockResolvedValue([
+      { seat_index: 1, name: "ChatBot", message: "Nice hand!", hand_number: 1, timestamp: "2024-01-01T00:00:05", trigger_event: "after_action" },
+    ]);
+
+    const { container } = render(
+      <MemoryRouter>
+        <GameReview />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(container.querySelector(".game-review__chat")).toBeInTheDocument();
+    });
+
+    const chatMsgs = container.querySelectorAll(".game-review__chat-msg");
+    expect(chatMsgs).toHaveLength(1);
+    expect(container.querySelector(".game-review__chat-text")).toHaveTextContent("Nice hand!");
+    expect(container.querySelector(".game-review__chat-name")).toHaveTextContent("ChatBot");
+  });
+
+  it("has results button navigating to post-game", async () => {
+    mockFetchHands.mockResolvedValue([
+      { id: 1, hand_number: 1, dealer_position: 0, small_blind: 10, big_blind: 20, phase: "showdown", community_cards_json: "[]", pots_json: "[]", winners_json: "[]" },
+    ]);
+    mockFetchHand.mockResolvedValue({
+      id: 1,
+      hand_number: 1,
+      dealer_position: 0,
+      small_blind: 10,
+      big_blind: 20,
+      phase: "showdown",
+      community_cards_json: "[]",
+      pots_json: "[]",
+      winners_json: "[]",
+      showdown_json: null,
+      actions: [],
+    });
+
+    const { container } = render(
+      <MemoryRouter>
+        <GameReview />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(container.querySelector(".game-review__navigator")).toBeInTheDocument();
+    });
+
+    // Find the "Results" button in the header
+    const headerBtns = container.querySelectorAll(".game-review__back-btn");
+    const resultsBtn = Array.from(headerBtns).find((btn) => btn.textContent === "Results");
+    expect(resultsBtn).toBeDefined();
+    fireEvent.click(resultsBtn!);
+    expect(mockNavigate).toHaveBeenCalledWith("/game/1/results");
   });
 });
 

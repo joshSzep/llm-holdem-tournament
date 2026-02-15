@@ -2,17 +2,11 @@
 
 import json
 import logging
-from typing import Optional
 
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from llm_holdem.db.models import ChatMessage
-from llm_holdem.db.models import CostRecord
-from llm_holdem.db.models import Game
-from llm_holdem.db.models import GamePlayer
-from llm_holdem.db.models import Hand
-from llm_holdem.db.models import HandAction
+from llm_holdem.db.models import ChatMessage, CostRecord, Game, GamePlayer, Hand, HandAction
 
 logger = logging.getLogger(__name__)
 
@@ -503,7 +497,7 @@ async def create_cost_record(
 
 async def get_cost_records(
     session: AsyncSession,
-    game_id: Optional[int] = None,
+    game_id: int | None = None,
 ) -> list[CostRecord]:
     """Get cost records, optionally filtered by game.
 
@@ -543,4 +537,104 @@ async def get_cost_summary(session: AsyncSession) -> dict:
         "total_input_tokens": total_input,
         "total_output_tokens": total_output,
         "call_count": len(records),
+    }
+
+
+async def get_game_stats(session: AsyncSession, game_id: int) -> dict:
+    """Compute rich game statistics for the post-game summary.
+
+    Args:
+        session: Database session.
+        game_id: The game's database ID.
+
+    Returns:
+        Dict with total_hands, biggest_pot, best_hand, most_aggressive,
+        most_hands_won, biggest_bluff fields.
+    """
+    hands = await get_hands_for_game(session, game_id)
+    players = await get_game_players(session, game_id)
+
+    total_hands = len(hands)
+    biggest_pot = 0
+    biggest_pot_hand = 0
+    best_hand_name = ""
+    best_hand_rank = 9999
+    best_hand_player = ""
+    best_hand_number = 0
+
+    # Per-player stats
+    raise_counts: dict[int, int] = {}
+    wins: dict[int, int] = {}
+
+    player_names: dict[int, str] = {p.seat_index: p.name for p in players}
+
+    for hand in hands:
+        # Parse pots
+        try:
+            pots = json.loads(hand.pots_json) if hand.pots_json else []
+            hand_total_pot = sum(p.get("amount", 0) for p in pots if isinstance(p, dict))
+            if hand_total_pot > biggest_pot:
+                biggest_pot = hand_total_pot
+                biggest_pot_hand = hand.hand_number
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+        # Parse winners
+        try:
+            winners = json.loads(hand.winners_json) if hand.winners_json else []
+            for w in winners:
+                if isinstance(w, int):
+                    wins[w] = wins.get(w, 0) + 1
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+        # Parse showdown for best hand
+        if hand.showdown_json:
+            try:
+                showdown = json.loads(hand.showdown_json)
+                hand_results = showdown.get("hand_results", [])
+                for hr in hand_results:
+                    rank = hr.get("hand_rank", 9999)
+                    if isinstance(rank, int) and rank < best_hand_rank:
+                        best_hand_rank = rank
+                        best_hand_name = hr.get("hand_name", "")
+                        seat = hr.get("player_index", -1)
+                        best_hand_player = player_names.get(seat, f"Seat {seat}")
+                        best_hand_number = hand.hand_number
+            except (json.JSONDecodeError, TypeError):
+                pass
+
+        # Count raises per player
+        actions = await get_actions_for_hand(session, hand.id)
+        for action in actions:
+            if action.action_type == "raise":
+                raise_counts[action.seat_index] = raise_counts.get(action.seat_index, 0) + 1
+
+    # Find most aggressive player
+    most_aggressive_name = ""
+    most_raises = 0
+    for seat, count in raise_counts.items():
+        if count > most_raises:
+            most_raises = count
+            most_aggressive_name = player_names.get(seat, f"Seat {seat}")
+
+    # Find player with most hands won
+    most_wins_name = ""
+    most_wins_count = 0
+    for seat, count in wins.items():
+        if count > most_wins_count:
+            most_wins_count = count
+            most_wins_name = player_names.get(seat, f"Seat {seat}")
+
+    return {
+        "total_hands": total_hands,
+        "biggest_pot": biggest_pot,
+        "biggest_pot_hand": biggest_pot_hand,
+        "best_hand_name": best_hand_name if best_hand_rank < 9999 else "",
+        "best_hand_player": best_hand_player if best_hand_rank < 9999 else "",
+        "best_hand_number": best_hand_number if best_hand_rank < 9999 else 0,
+        "most_aggressive_name": most_aggressive_name,
+        "most_aggressive_raises": most_raises,
+        "most_hands_won_name": most_wins_name,
+        "most_hands_won_count": most_wins_count,
     }

@@ -1,19 +1,11 @@
 """Tests for database models and connection management."""
 
 import pytest
-
-from sqlalchemy.ext.asyncio import AsyncEngine
-from sqlalchemy.ext.asyncio import create_async_engine
-from sqlmodel import SQLModel
-from sqlmodel import select
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
+from sqlmodel import SQLModel, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from llm_holdem.db.models import ChatMessage
-from llm_holdem.db.models import CostRecord
-from llm_holdem.db.models import Game
-from llm_holdem.db.models import GamePlayer
-from llm_holdem.db.models import Hand
-from llm_holdem.db.models import HandAction
+from llm_holdem.db.models import ChatMessage, CostRecord, Game, GamePlayer, Hand, HandAction
 
 
 @pytest.fixture()

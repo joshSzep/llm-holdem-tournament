@@ -2,7 +2,7 @@
 
 import asyncio
 import logging
-from typing import Callable
+from collections.abc import Callable
 from typing import Literal
 
 logger = logging.getLogger(__name__)
@@ -124,7 +124,7 @@ class TurnTimer:
                     )
                     # Action received during this second
                     return
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     continue
 
             # Timer expired — player didn't act in time

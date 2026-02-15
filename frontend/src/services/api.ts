@@ -5,10 +5,12 @@
 
 import type { AgentListResponse } from "../types/agents";
 import type {
+  ChatMessageRecord,
   CostListResponse,
   CreateGameRequest,
   CreateGameResponse,
   GameDetail,
+  GameStatsResponse,
   GameSummary,
   HandDetail,
   HandSummary,
@@ -97,6 +99,20 @@ export async function fetchHand(
   handNumber: number,
 ): Promise<HandDetail> {
   return request<HandDetail>(`/games/${gameId}/hands/${handNumber}`);
+}
+
+// ─── Game Stats & Chat Endpoints ─────────────────────
+
+export async function fetchGameStats(
+  gameId: number,
+): Promise<GameStatsResponse> {
+  return request<GameStatsResponse>(`/games/${gameId}/stats`);
+}
+
+export async function fetchGameChat(
+  gameId: number,
+): Promise<ChatMessageRecord[]> {
+  return request<ChatMessageRecord[]>(`/games/${gameId}/chat`);
 }
 
 // ─── Config Endpoints ────────────────────────────────

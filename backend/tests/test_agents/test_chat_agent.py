@@ -1,22 +1,18 @@
 """Tests for chat agent — with mocked LLM responses."""
 
 import time
-from unittest.mock import AsyncMock
-from unittest.mock import MagicMock
-from unittest.mock import patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
-import pytest
 from pydantic_ai.usage import Usage
 
-from llm_holdem.agents.chat_agent import CHAT_COOLDOWN_SECONDS
-from llm_holdem.agents.chat_agent import get_chat_response
-from llm_holdem.agents.chat_agent import should_agent_speak
-from llm_holdem.agents.chat_agent import trigger_chat_responses
-from llm_holdem.agents.schemas import AgentProfile
-from llm_holdem.agents.schemas import ChatResponse
-from llm_holdem.game.state import Card
-from llm_holdem.game.state import GameState
-from llm_holdem.game.state import PlayerState
+from llm_holdem.agents.chat_agent import (
+    CHAT_COOLDOWN_SECONDS,
+    get_chat_response,
+    should_agent_speak,
+    trigger_chat_responses,
+)
+from llm_holdem.agents.schemas import AgentProfile, ChatResponse
+from llm_holdem.game.state import Card, GameState, PlayerState
 
 
 def _make_profile(

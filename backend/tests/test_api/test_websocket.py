@@ -1,25 +1,22 @@
 """Tests for WebSocket handler and connection management."""
 
-import pytest
-from httpx import ASGITransport
-from httpx import AsyncClient
 from starlette.testclient import TestClient
 
-from llm_holdem.api.messages import ChatMessageIn
-from llm_holdem.api.messages import ChatMessageOut
-from llm_holdem.api.messages import ErrorMessage
-from llm_holdem.api.messages import GameOverMessage
-from llm_holdem.api.messages import GamePausedMessage
-from llm_holdem.api.messages import GameResumedMessage
-from llm_holdem.api.messages import GameStateMessage
-from llm_holdem.api.messages import PauseGameMessage
-from llm_holdem.api.messages import PlayerActionMessage
-from llm_holdem.api.messages import TimerUpdateMessage
-from llm_holdem.api.websocket_handler import ConnectionManager
-from llm_holdem.api.websocket_handler import parse_client_message
+from llm_holdem.api.messages import (
+    ChatMessageIn,
+    ChatMessageOut,
+    ErrorMessage,
+    GameOverMessage,
+    GamePausedMessage,
+    GameResumedMessage,
+    GameStateMessage,
+    PauseGameMessage,
+    PlayerActionMessage,
+    TimerUpdateMessage,
+)
+from llm_holdem.api.websocket_handler import ConnectionManager, parse_client_message
 from llm_holdem.game.state import GameState
 from llm_holdem.main import app
-
 
 # ─── Message Serialization Tests ─────────────────────
 

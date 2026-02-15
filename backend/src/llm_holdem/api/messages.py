@@ -2,11 +2,9 @@
 
 from typing import Literal
 
-from pydantic import BaseModel
-from pydantic import Field
+from pydantic import BaseModel, Field
 
 from llm_holdem.game.state import GameState
-
 
 # ─── Server → Client Messages ────────────────────────
 

@@ -98,11 +98,17 @@
 .game-review__content {
   flex: 1;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: var(--spacing-lg);
   padding: var(--spacing-lg);
   overflow-y: auto;
+}
+
+.game-review__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
 }
 
 /* Board */
@@ -167,8 +173,9 @@
   color: var(--color-text-secondary);
 }
 
-.game-review__action-seat {
-  min-width: 50px;
+.game-review__action-seat,
+.game-review__action-player {
+  min-width: 80px;
   font-family: var(--font-family-mono);
 }
 
@@ -195,4 +202,119 @@
 .game-review__action-list::-webkit-scrollbar-thumb {
   background: var(--color-border);
   border-radius: var(--radius-full);
+}
+
+/* Action type colors */
+.game-review__action-type--fold {
+  color: var(--color-text-muted);
+}
+
+.game-review__action-type--check {
+  color: var(--color-success);
+}
+
+.game-review__action-type--call {
+  color: var(--color-accent);
+}
+
+.game-review__action-type--raise {
+  color: var(--color-warning);
+}
+
+.game-review__action-type--post_blind {
+  color: var(--color-text-secondary);
+}
+
+/* Sub titles */
+.game-review__sub-title {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Showdown section */
+.game-review__showdown {
+  width: 100%;
+  max-width: 500px;
+}
+
+.game-review__showdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.game-review__showdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-tertiary);
+}
+
+.game-review__showdown-item--winner {
+  border-left: 3px solid var(--color-warning);
+  background: rgba(210, 153, 34, 0.1);
+}
+
+.game-review__showdown-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-review__showdown-name {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.game-review__showdown-hand {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* Chat sidebar */
+.game-review__chat {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.game-review__chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.game-review__chat-msg {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: flex-start;
+}
+
+.game-review__chat-bubble {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-xs);
+  flex: 1;
+}
+
+.game-review__chat-name {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.game-review__chat-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
 }

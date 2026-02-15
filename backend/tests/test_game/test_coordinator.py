@@ -3,17 +3,18 @@
 import asyncio
 
 import pytest
+from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlalchemy.ext.asyncio import create_async_engine
 
 from llm_holdem.api.messages import PlayerActionMessage
 from llm_holdem.api.websocket_handler import ConnectionManager
 from llm_holdem.db.persistence import save_new_game
-from llm_holdem.db.repository import get_game_by_id
-from llm_holdem.db.repository import get_game_players
-from llm_holdem.db.repository import get_hands_for_game
-from llm_holdem.db.repository import update_game_status
+from llm_holdem.db.repository import (
+    get_game_by_id,
+    get_game_players,
+    get_hands_for_game,
+)
 from llm_holdem.game.coordinator import GameCoordinator
 from llm_holdem.game.engine import GameEngine
 from llm_holdem.game.state import PlayerState
@@ -155,7 +156,7 @@ class TestCoordinatorAIGame:
                 coordinator.run_game(session),
                 timeout=30.0,
             )
-        except asyncio.TimeoutError:
+        except TimeoutError:
             pytest.fail("Game did not complete within timeout")
 
         # Verify game completed
@@ -183,7 +184,7 @@ class TestCoordinatorAIGame:
                 coordinator.run_game(session),
                 timeout=30.0,
             )
-        except asyncio.TimeoutError:
+        except TimeoutError:
             pytest.fail("Game did not complete within timeout")
 
         # Check that final chip counts are in DB

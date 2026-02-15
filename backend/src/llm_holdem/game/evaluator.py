@@ -5,9 +5,7 @@ import logging
 from treys import Card as TreysCard
 from treys import Evaluator as TreysEvaluator
 
-from llm_holdem.game.state import Card
-from llm_holdem.game.state import HandResult
-from llm_holdem.game.state import RANK_NAMES
+from llm_holdem.game.state import RANK_NAMES, Card, HandResult
 
 logger = logging.getLogger(__name__)
 

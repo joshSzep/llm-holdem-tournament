@@ -8,9 +8,7 @@ hidden information leaks into the prompt.
 import logging
 import re
 
-from llm_holdem.game.state import Card
-from llm_holdem.game.state import GameState
-from llm_holdem.game.state import PlayerState
+from llm_holdem.game.state import Card, GameState, PlayerState
 
 logger = logging.getLogger(__name__)
 

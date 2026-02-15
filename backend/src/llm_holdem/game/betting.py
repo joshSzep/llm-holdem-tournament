@@ -1,11 +1,8 @@
 """Betting logic — action validation and application."""
 
 import logging
-from typing import Literal
 
-from llm_holdem.game.state import Action
-from llm_holdem.game.state import ActionType
-from llm_holdem.game.state import PlayerState
+from llm_holdem.game.state import Action, ActionType, PlayerState
 
 logger = logging.getLogger(__name__)
 
