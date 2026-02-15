@@ -3,9 +3,7 @@ name = "llm-holdem"
 version = "0.1.0"
 description = "LLM Hold'Em Tournament — Texas Hold'Em poker with LLM-powered opponents"
 readme = "README.md"
-authors = [
-    { name = "Joshua Szepietowski", email = "joshSzep@gmail.com" }
-]
+authors = [{ name = "Joshua Szepietowski", email = "joshSzep@gmail.com" }]
 requires-python = ">=3.13"
 dependencies = [
     "fastapi>=0.115.0",
