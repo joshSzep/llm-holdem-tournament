@@ -362,50 +362,50 @@ This roadmap breaks the project into **6 phases**, each building on the previous
 
 ---
 
-## Phase 5: Animations & Polish
+## Phase 5: Animations & Polish ✅
 
 **Goal**: Add all animations, showdown effects, and visual polish to make the game exciting and appealing.
 
 ### 5.1 Card Dealing Animation
-- [ ] Animate cards from deck position to player seat positions
-- [ ] Stagger dealing animation (one card at a time, round-robin)
-- [ ] Animate community card reveals (flop: 3 cards, turn, river)
-- [ ] Use Framer Motion for smooth transitions
+- [x] Animate cards from deck position to player seat positions
+- [x] Stagger dealing animation (one card at a time, round-robin)
+- [x] Animate community card reveals (flop: 3 cards, turn, river)
+- [x] Use Framer Motion for smooth transitions
 
 ### 5.2 Chip Animations
-- [ ] Animate chip count moving from player to pot on bet/call/raise
-- [ ] Animate pot distribution to winner at end of hand
-- [ ] Animate blind posting
-- [ ] Smooth number transitions for chip count changes
+- [x] Animate chip count moving from player to pot on bet/call/raise
+- [x] Animate pot distribution to winner at end of hand
+- [x] Animate blind posting
+- [x] Smooth number transitions for chip count changes
 
 ### 5.3 Player Action Animations
-- [ ] Fold animation (cards sliding/fading away)
-- [ ] Check animation (subtle tap indicator)
-- [ ] Call/Raise animation (chip push + amount display)
-- [ ] All-in animation (dramatic chip push)
+- [x] Fold animation (cards sliding/fading away)
+- [x] Check animation (subtle tap indicator)
+- [x] Call/Raise animation (chip push + amount display)
+- [x] All-in animation (dramatic chip push)
 
 ### 5.4 Dealer Button Animation
-- [ ] Smooth movement of dealer button between seats between hands
+- [x] Smooth movement of dealer button between seats between hands
 
 ### 5.5 Showdown Animations (Tiered by Hand Strength)
-- [ ] High Card / One Pair: minimal — simple card reveal
-- [ ] Two Pair / Three of a Kind: subtle — slight glow or highlight
-- [ ] Straight / Flush: moderate — expanding highlight with emphasis
-- [ ] Full House: impressive — dramatic reveal with strong glow
-- [ ] Four of a Kind / Straight Flush: very impressive — particles or light burst
-- [ ] Royal Flush: most spectacular — full celebration animation
-- [ ] Display hand evaluation text with animation (e.g., "Full House, Kings full of Sevens")
+- [x] High Card / One Pair: minimal — simple card reveal
+- [x] Two Pair / Three of a Kind: subtle — slight glow or highlight
+- [x] Straight / Flush: moderate — expanding highlight with emphasis
+- [x] Full House: impressive — dramatic reveal with strong glow
+- [x] Four of a Kind / Straight Flush: very impressive — particles or light burst
+- [x] Royal Flush: most spectacular — full celebration animation
+- [x] Display hand evaluation text with animation (e.g., "Full House, Kings full of Sevens")
 
 ### 5.6 Player Elimination Animation
-- [ ] Dramatic seat dimming/fading when a player is eliminated
-- [ ] Brief "eliminated" banner or label
+- [x] Dramatic seat dimming/fading when a player is eliminated
+- [x] Brief "eliminated" banner or label
 
 ### 5.7 Transitions & Polish
-- [ ] Page transition animations (lobby → table, table → results)
-- [ ] Smooth game phase transitions
-- [ ] Loading/connecting states with appropriate visuals
-- [ ] Reconnection overlay animation
-- [ ] General CSS polish pass (spacing, typography, hover states, focus states)
+- [x] Page transition animations (lobby → table, table → results)
+- [x] Smooth game phase transitions
+- [x] Loading/connecting states with appropriate visuals
+- [x] Reconnection overlay animation
+- [x] General CSS polish pass (spacing, typography, hover states, focus states)
 
 ---
 

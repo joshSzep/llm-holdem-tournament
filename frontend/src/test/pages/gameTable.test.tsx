@@ -95,7 +95,7 @@ describe("GameTable", () => {
       </MemoryRouter>,
     );
     expect(
-      container.querySelector(".game-table__status"),
+      container.querySelector(".loading-spinner"),
     ).toBeInTheDocument();
   });
 
@@ -108,7 +108,7 @@ describe("GameTable", () => {
       </MemoryRouter>,
     );
     expect(
-      container.querySelector(".game-table__status"),
+      container.querySelector(".loading-spinner__message"),
     ).toHaveTextContent("Waiting");
   });
 

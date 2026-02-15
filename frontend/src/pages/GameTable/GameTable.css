@@ -15,6 +15,18 @@
   font-size: var(--font-size-lg);
 }
 
+/* Reconnection overlay */
+.game-table__reconnect-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(13, 17, 23, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Header */
 .game-table__header {
   display: flex;

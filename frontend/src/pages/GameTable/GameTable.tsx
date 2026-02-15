@@ -5,6 +5,7 @@
  */
 
 import { useParams, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import "./GameTable.css";
 import { useWebSocket } from "../../hooks/useWebSocket";
 import { useGameActions } from "../../hooks/useGameActions";
@@ -18,6 +19,7 @@ import { ActionButtons } from "../../components/controls/ActionButtons";
 import { ChatPanel } from "../../components/chat/ChatPanel";
 import { TurnTimer } from "../../components/timer/TurnTimer";
 import { CostIndicator } from "../../components/cost/CostIndicator";
+import { LoadingSpinner } from "../../components/transitions/LoadingSpinner";
 
 export function GameTable(): React.ReactElement {
   const { id } = useParams<{ id: string }>();
@@ -73,15 +75,31 @@ export function GameTable(): React.ReactElement {
   if (!gameState) {
     return (
       <div className="game-table game-table--loading">
-        <div className="game-table__status">
-          {!isConnected ? "Connecting…" : "Waiting for game state…"}
-        </div>
+        <LoadingSpinner
+          message={!isConnected ? "Connecting…" : "Waiting for game state…"}
+          size="large"
+        />
       </div>
     );
   }
 
   return (
     <div className="game-table">
+      {/* Reconnection overlay */}
+      <AnimatePresence>
+        {!isConnected && gameState && (
+          <motion.div
+            className="game-table__reconnect-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <LoadingSpinner message="Reconnecting…" size="medium" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header bar */}
       <header className="game-table__header">
         <div className="game-table__info">
@@ -124,6 +142,9 @@ export function GameTable(): React.ReactElement {
             humanSeatIndex={humanPlayer?.seat_index ?? null}
             timerSeatIndex={timer?.seat_index ?? null}
             timerSeconds={timer?.seconds_remaining ?? null}
+            showdownResult={gameState.showdown_result}
+            recentActions={gameState.current_hand_actions}
+            phase={gameState.phase}
           />
 
           {/* Action buttons — only in player mode, on human's turn */}

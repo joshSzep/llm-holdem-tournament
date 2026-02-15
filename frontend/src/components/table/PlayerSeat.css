@@ -94,3 +94,58 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
+
+/* ─── Action Badge ─── */
+.player-seat__action-badge {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.player-seat__action-badge--fold {
+  background: rgba(248, 81, 73, 0.2);
+  color: var(--color-danger);
+  border: 1px solid rgba(248, 81, 73, 0.4);
+}
+
+.player-seat__action-badge--check {
+  background: rgba(63, 185, 80, 0.2);
+  color: var(--color-success);
+  border: 1px solid rgba(63, 185, 80, 0.4);
+}
+
+.player-seat__action-badge--call {
+  background: rgba(88, 166, 255, 0.2);
+  color: var(--color-accent);
+  border: 1px solid rgba(88, 166, 255, 0.4);
+}
+
+.player-seat__action-badge--raise {
+  background: rgba(210, 153, 34, 0.2);
+  color: var(--color-warning);
+  border: 1px solid rgba(210, 153, 34, 0.4);
+}
+
+.player-seat__action-badge--all_in,
+.player-seat__action-badge--all-in {
+  background: rgba(210, 153, 34, 0.3);
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.6);
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.3);
+}
+
+.player-seat__action-badge--post_blind {
+  background: rgba(139, 148, 158, 0.15);
+  color: var(--color-text-muted);
+  border: 1px solid rgba(139, 148, 158, 0.3);
+}

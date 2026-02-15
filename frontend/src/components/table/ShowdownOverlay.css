@@ -1,0 +1,150 @@
+/* ─── Showdown Overlay ─── */
+.showdown-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Tier backgrounds */
+.showdown-overlay--subtle {
+  background: transparent;
+}
+
+.showdown-overlay--moderate {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(210, 153, 34, 0.08) 0%,
+    transparent 70%
+  );
+}
+
+.showdown-overlay--impressive {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(248, 196, 48, 0.12) 0%,
+    transparent 70%
+  );
+}
+
+.showdown-overlay--spectacular {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 215, 0, 0.18) 0%,
+    rgba(255, 215, 0, 0.05) 50%,
+    transparent 80%
+  );
+}
+
+.showdown-overlay--none {
+  background: transparent;
+}
+
+/* Result card */
+.showdown-overlay__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: rgba(13, 17, 23, 0.85);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+  min-width: 200px;
+}
+
+.showdown-overlay--impressive .showdown-overlay__card {
+  border-color: rgba(248, 196, 48, 0.5);
+  box-shadow: 0 0 20px rgba(248, 196, 48, 0.2);
+}
+
+.showdown-overlay--spectacular .showdown-overlay__card {
+  border-color: rgba(255, 215, 0, 0.7);
+  box-shadow:
+    0 0 30px rgba(255, 215, 0, 0.3),
+    0 0 60px rgba(255, 215, 0, 0.1);
+}
+
+/* Winner badge */
+.showdown-overlay__winner-badge {
+  padding: 2px var(--spacing-md);
+  background: linear-gradient(135deg, #d29922, #f8c430);
+  color: #1a1a1a;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Hand results */
+.showdown-overlay__results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.showdown-overlay__hand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  opacity: 0.6;
+}
+
+.showdown-overlay__hand--winner {
+  opacity: 1;
+}
+
+.showdown-overlay__hand-name {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.showdown-overlay__hand--winner .showdown-overlay__hand-name {
+  color: var(--color-warning);
+  text-shadow: 0 0 8px rgba(210, 153, 34, 0.4);
+}
+
+.showdown-overlay__hand-desc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* Particles */
+.showdown-overlay__particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.showdown-overlay__particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.showdown-overlay__particle--impressive {
+  background: #f8c430;
+  box-shadow: 0 0 6px rgba(248, 196, 48, 0.6);
+}
+
+.showdown-overlay__particle--spectacular {
+  background: #ffd700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+  width: 8px;
+  height: 8px;
+}

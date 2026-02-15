@@ -1,14 +1,16 @@
 /**
  * PokerTable — the main oval poker table with dynamic seat positioning.
- * Arranges 2-6 player seats around an elliptical table, with community cards
- * and pot display in the center.
+ * Arranges 2-6 player seats around an elliptical table, with community cards,
+ * pot display, and showdown overlay in the center.
  */
 
 import "./PokerTable.css";
-import type { PlayerState, Card as CardType, Pot } from "../../types/game";
+import type { PlayerState, Card as CardType, Pot, ShowdownResult, Action } from "../../types/game";
 import { PlayerSeat } from "./PlayerSeat";
 import { CommunityCards } from "./CommunityCards";
 import { PotDisplay } from "./PotDisplay";
+import { ShowdownOverlay, getShowdownTier } from "./ShowdownOverlay";
+import type { ShowdownTier } from "./ShowdownOverlay";
 
 interface PokerTableProps {
   players: PlayerState[];
@@ -18,6 +20,12 @@ interface PokerTableProps {
   humanSeatIndex: number | null;
   timerSeatIndex?: number | null;
   timerSeconds?: number | null;
+  /** Showdown result data for animation */
+  showdownResult?: ShowdownResult | null;
+  /** Recent actions for action badge display */
+  recentActions?: Action[];
+  /** Current game phase */
+  phase?: string;
 }
 
 /**
@@ -77,6 +85,38 @@ function getSeatPositions(
   return result;
 }
 
+/**
+ * Get the last action for a specific player seat from recent actions.
+ */
+function getLastAction(
+  recentActions: Action[] | undefined,
+  seatIndex: number,
+): string | null {
+  if (!recentActions || recentActions.length === 0) return null;
+  for (let i = recentActions.length - 1; i >= 0; i--) {
+    if (recentActions[i]!.player_index === seatIndex) {
+      return recentActions[i]!.action_type;
+    }
+  }
+  return null;
+}
+
+/**
+ * Determine showdown highlight for a player based on their hand result.
+ */
+function getPlayerHighlight(
+  showdownResult: ShowdownResult | null | undefined,
+  seatIndex: number,
+): ShowdownTier {
+  if (!showdownResult) return "none";
+  const hr = showdownResult.hand_results.find(
+    (r) => r.player_index === seatIndex,
+  );
+  if (!hr) return "none";
+  if (!showdownResult.winners.includes(seatIndex)) return "none";
+  return getShowdownTier(hr.hand_rank);
+}
+
 export function PokerTable({
   players,
   communityCards,
@@ -85,8 +125,12 @@ export function PokerTable({
   humanSeatIndex,
   timerSeatIndex,
   timerSeconds,
+  showdownResult = null,
+  recentActions,
+  phase,
 }: PokerTableProps): React.ReactElement {
   const positions = getSeatPositions(players.length, humanSeatIndex);
+  const isShowdown = phase === "showdown" && showdownResult !== null;
 
   return (
     <div className="poker-table">
@@ -96,6 +140,9 @@ export function PokerTable({
           <PotDisplay pots={pots} />
           <CommunityCards cards={communityCards} />
         </div>
+
+        {/* Showdown overlay */}
+        <ShowdownOverlay result={showdownResult ?? null} visible={isShowdown} />
 
         {/* Player seats arranged around the table */}
         {players.map((player, i) => (
@@ -110,6 +157,8 @@ export function PokerTable({
                 ? timerSeconds
                 : null
             }
+            lastAction={getLastAction(recentActions, player.seat_index)}
+            showdownHighlight={getPlayerHighlight(showdownResult, player.seat_index)}
           />
         ))}
       </div>
