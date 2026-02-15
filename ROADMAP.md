@@ -252,113 +252,113 @@ This roadmap breaks the project into **6 phases**, each building on the previous
 **Goal**: Build the entire frontend UI with real WebSocket integration. The game is fully playable end-to-end at this point.
 
 ### 4.1 App Shell & Routing
-- [ ] Set up React Router for page navigation
+- [x] Set up React Router for page navigation
   - `/` → Lobby
   - `/game/:id` → Game Table
   - `/game/:id/results` → Post-Game Summary
   - `/game/:id/review` → Game Review
-- [ ] Create App shell with dark theme base styles
-- [ ] Set up global CSS variables (colors, spacing, typography)
-- [ ] Set up Zustand stores (game, lobby, chat)
+- [x] Create App shell with dark theme base styles
+- [x] Set up global CSS variables (colors, spacing, typography)
+- [x] Set up Zustand stores (game, lobby, chat)
 
 ### 4.2 WebSocket Service
-- [ ] Implement WebSocket client service
+- [x] Implement WebSocket client service
   - Connect, disconnect, send messages
   - Auto-reconnect with exponential backoff
-- [ ] Implement `useWebSocket` hook
+- [x] Implement `useWebSocket` hook
   - Connection state management
   - Message dispatch to Zustand stores
-- [ ] Implement typed message handling (discriminated union on `type`)
-- [ ] Write tests for WebSocket service
+- [x] Implement typed message handling (discriminated union on `type`)
+- [x] Write tests for WebSocket service
 
 ### 4.3 REST API Service
-- [ ] Implement API client service (fetch wrapper)
-- [ ] Implement typed API calls for all endpoints
-- [ ] Write tests for API service
+- [x] Implement API client service (fetch wrapper)
+- [x] Implement typed API calls for all endpoints
+- [x] Write tests for API service
 
 ### 4.4 Lobby Page
-- [ ] Build lobby layout (New Game / In-Progress / History sections)
-- [ ] Build Game Mode Selector (Play vs. Spectate toggle)
-- [ ] Build Seat Configurator
+- [x] Build lobby layout (New Game / In-Progress / History sections)
+- [x] Build Game Mode Selector (Play vs. Spectate toggle)
+- [x] Build Seat Configurator
   - Visual seat arrangement (2-6 seats)
   - Per-seat: choose agent from roster or "Random"
   - Agent roster browser with AgentCard (name, avatar, backstory)
-- [ ] Build In-Progress Games list with Resume button
-- [ ] Build Game History list with Review button
-- [ ] Style with dark theme CSS
-- [ ] Write component tests
+- [x] Build In-Progress Games list with Resume button
+- [x] Build Game History list with Review button
+- [x] Style with dark theme CSS
+- [x] Write component tests
 
 ### 4.5 Poker Table — Static Layout
-- [ ] Build PokerTable component (oval table, bird's-eye view)
-- [ ] Build PlayerSeat component (avatar, name, chip count, cards area)
+- [x] Build PokerTable component (oval table, bird's-eye view)
+- [x] Build PlayerSeat component (avatar, name, chip count, cards area)
   - Position seats dynamically around the table for 2-6 players
-- [ ] Build CommunityCards component (5-card area in center)
-- [ ] Build PotDisplay component (main pot + side pots)
-- [ ] Build DealerButton component
-- [ ] Style with dark theme CSS
-- [ ] Write component tests
+- [x] Build CommunityCards component (5-card area in center)
+- [x] Build PotDisplay component (main pot + side pots)
+- [x] Build DealerButton component
+- [x] Style with dark theme CSS
+- [x] Write component tests
 
 ### 4.6 Card Components
-- [ ] Build Card component (simple design, rank + suit display)
-- [ ] Build CardBack component (face-down card)
-- [ ] Build HoleCards component (two-card display per player)
-- [ ] Handle visibility rules:
+- [x] Build Card component (simple design, rank + suit display)
+- [x] Build CardBack component (face-down card)
+- [x] Build HoleCards component (two-card display per player)
+- [x] Handle visibility rules:
   - Player mode: own cards face-up, opponents face-down
   - Spectator mode: all cards face-up
-- [ ] Style cards with clean, high-contrast design
-- [ ] Write component tests
+- [x] Style cards with clean, high-contrast design
+- [x] Write component tests
 
 ### 4.7 Player Controls
-- [ ] Build ActionButtons component (Fold, Check, Call, Raise)
+- [x] Build ActionButtons component (Fold, Check, Call, Raise)
   - Context-aware labels (Check vs. Call, Bet vs. Raise)
   - Disabled when not human's turn
-- [ ] Build PresetButtons (Min Raise, 2x, 3x, Pot, All-In)
-- [ ] Build RaiseSlider (min raise to all-in range)
-- [ ] Integrate with WebSocket to send player actions
-- [ ] Implement `useGameActions` hook
-- [ ] Style with dark theme CSS
-- [ ] Write component tests
+- [x] Build PresetButtons (Min Raise, 2x, 3x, Pot, All-In)
+- [x] Build RaiseSlider (min raise to all-in range)
+- [x] Integrate with WebSocket to send player actions
+- [x] Implement `useGameActions` hook
+- [x] Style with dark theme CSS
+- [x] Write component tests
 
 ### 4.8 Chat Panel
-- [ ] Build ChatPanel component (scrollable message list)
-- [ ] Build ChatMessage component (distinguish chat vs. game action visually)
-- [ ] Build ChatInput component (text input + send button)
+- [x] Build ChatPanel component (scrollable message list)
+- [x] Build ChatMessage component (distinguish chat vs. game action visually)
+- [x] Build ChatInput component (text input + send button)
   - Visible in Player mode only
   - Disabled in Spectator mode
-- [ ] Integrate with WebSocket for sending/receiving chat
-- [ ] Style with dark theme CSS
-- [ ] Write component tests
+- [x] Integrate with WebSocket for sending/receiving chat
+- [x] Style with dark theme CSS
+- [x] Write component tests
 
 ### 4.9 Turn Timer
-- [ ] Build TurnTimer component (visual countdown)
-- [ ] Implement `useTimer` hook synchronized with server timer updates
-- [ ] Display on active player's seat
-- [ ] Visual urgency (color change as time runs low)
-- [ ] Style with dark theme CSS
-- [ ] Write component tests
+- [x] Build TurnTimer component (visual countdown)
+- [x] Implement `useTimer` hook synchronized with server timer updates
+- [x] Display on active player's seat
+- [x] Visual urgency (color change as time runs low)
+- [x] Style with dark theme CSS
+- [x] Write component tests
 
 ### 4.10 Avatar Component
-- [ ] Build Avatar component with state indicators:
+- [x] Build Avatar component with state indicators:
   - Default, Active turn (glow), Folded (grey), Low chips (red border)
   - Thinking (spinning dots), Eliminated (dimmed)
-- [ ] Bundle placeholder avatar images (can be refined later)
-- [ ] Style with dark theme CSS
-- [ ] Write component tests
+- [x] Bundle placeholder avatar images (can be refined later)
+- [x] Style with dark theme CSS
+- [x] Write component tests
 
 ### 4.11 Cost Indicator
-- [ ] Build CostIndicator component
-- [ ] Display current game cost and cumulative session cost
-- [ ] Position unobtrusively in UI
-- [ ] Write component tests
+- [x] Build CostIndicator component
+- [x] Display current game cost and cumulative session cost
+- [x] Position unobtrusively in UI
+- [x] Write component tests
 
 ### 4.12 Integration — Full Game Flow
-- [ ] Wire up lobby → create game → navigate to game table
-- [ ] Wire up WebSocket connection on game table mount
-- [ ] Wire up game state updates → Zustand → UI re-renders
-- [ ] Wire up player actions → WebSocket → backend → state update
-- [ ] Wire up chat messages end-to-end
-- [ ] Wire up timer display
-- [ ] Test complete game flow manually (end-to-end)
+- [x] Wire up lobby → create game → navigate to game table
+- [x] Wire up WebSocket connection on game table mount
+- [x] Wire up game state updates → Zustand → UI re-renders
+- [x] Wire up player actions → WebSocket → backend → state update
+- [x] Wire up chat messages end-to-end
+- [x] Wire up timer display
+- [x] Test complete game flow manually (end-to-end)
 
 ---
 

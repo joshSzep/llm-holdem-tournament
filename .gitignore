@@ -54,3 +54,4 @@ logs/
 
 # Logfire
 .logfire/
+frontend/coverage/

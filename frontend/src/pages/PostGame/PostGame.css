@@ -1,0 +1,167 @@
+.post-game {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: var(--spacing-xl);
+}
+
+.post-game__card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.post-game__title {
+  font-size: var(--font-size-2xl);
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+/* Winner highlight */
+.post-game__winner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: rgba(210, 153, 34, 0.1);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-lg);
+}
+
+.post-game__winner-icon {
+  font-size: var(--font-size-xl);
+}
+
+.post-game__winner-name {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-warning);
+}
+
+.post-game__winner-label {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+}
+
+/* Standings table */
+.post-game__standings {
+  width: 100%;
+}
+
+.post-game__section-title {
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.post-game__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.post-game__table th {
+  text-align: left;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border);
+  font-weight: 600;
+}
+
+.post-game__table td {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.post-game__row--winner td {
+  color: var(--color-warning);
+  font-weight: 600;
+}
+
+.post-game__chips {
+  font-family: var(--font-family-mono);
+}
+
+/* Stats grid */
+.post-game__stats {
+  width: 100%;
+}
+
+.post-game__stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.post-game__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--spacing-sm);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+}
+
+.post-game__stat-value {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  font-family: var(--font-family-mono);
+}
+
+.post-game__stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* Action buttons */
+.post-game__actions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.post-game__btn {
+  padding: var(--spacing-sm) var(--spacing-xl);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.post-game__btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.post-game__btn--primary {
+  background: var(--color-accent);
+  color: white;
+}
+
+.post-game__btn--primary:hover {
+  background: var(--color-accent-hover);
+}
+
+.post-game__btn--secondary {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.post-game__btn--secondary:hover {
+  background: var(--color-border);
+}

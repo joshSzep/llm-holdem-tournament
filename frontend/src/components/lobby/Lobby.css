@@ -1,0 +1,31 @@
+/* Lobby.css — Styles for lobby-level components (GameModeSelector, etc.) */
+
+.game-mode-selector {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.game-mode-selector__button {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.game-mode-selector__button:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.game-mode-selector__button--active {
+  background: var(--color-primary);
+  color: var(--color-text);
+  border-color: var(--color-primary);
+}
