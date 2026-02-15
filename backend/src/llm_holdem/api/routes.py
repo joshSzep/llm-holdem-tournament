@@ -195,15 +195,17 @@ async def create_new_game(
             name="You",
             starting_chips=request.starting_chips,
             agent_id=None,
+            avatar_url="/avatars/default.png",
         )
 
     # Create AI players
     registry = get_agent_registry()
     for i, agent_id in enumerate(request.agent_ids):
         seat = i + 1 if request.mode == "player" else i
-        # Find agent name from registry
+        # Find agent name and avatar from registry
         profile = registry.get_profile(agent_id)
         agent_name = profile.name if profile else agent_id
+        avatar_url = f"/avatars/{profile.avatar}" if profile else ""
 
         await create_game_player(
             session,
@@ -212,6 +214,7 @@ async def create_new_game(
             name=agent_name,
             starting_chips=request.starting_chips,
             agent_id=agent_id,
+            avatar_url=avatar_url,
         )
 
     logger.info("Created game %s with %d players", game_uuid, request.num_players)

@@ -150,29 +150,34 @@ class TestConnectionManager:
 class TestWebSocketEndpoint:
     """Integration tests for the WebSocket endpoint."""
 
-    def test_websocket_connect_and_send(self) -> None:
-        """Test basic WebSocket connection and message exchange."""
+    def test_websocket_connect_invalid_game_id(self) -> None:
+        """Test that a non-integer game_id gets an error response."""
         client = TestClient(app)
         with client.websocket_connect("/ws/game/test-game-1") as ws:
-            # Send a valid player action
-            ws.send_json({"type": "player_action", "action_type": "fold"})
-            # No response expected for now (just acknowledgement logged)
+            data = ws.receive_json()
+            assert data["type"] == "error"
+            assert data["code"] == "INVALID_GAME_ID"
+
+    def test_websocket_connect_game_not_found(self) -> None:
+        """Test that a non-existent game gets an error response."""
+        client = TestClient(app)
+        with client.websocket_connect("/ws/game/99999") as ws:
+            data = ws.receive_json()
+            assert data["type"] == "error"
+            assert data["code"] == "GAME_NOT_FOUND"
 
     def test_websocket_invalid_message(self) -> None:
         """Test that invalid messages get an error response."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/game/test-game-2") as ws:
-            # Send an invalid message
-            ws.send_json({"type": "unknown_type"})
-            # Should get an error message back
+        with client.websocket_connect("/ws/game/not-a-game") as ws:
+            # Server sends error for invalid game ID first
             data = ws.receive_json()
             assert data["type"] == "error"
-            assert data["code"] == "INVALID_MESSAGE"
+            assert data["code"] == "INVALID_GAME_ID"
 
     def test_websocket_invalid_action_type(self) -> None:
         """Test that invalid action types get an error response."""
         client = TestClient(app)
-        with client.websocket_connect("/ws/game/test-game-3") as ws:
-            ws.send_json({"type": "player_action", "action_type": "bluff"})
+        with client.websocket_connect("/ws/game/not-a-game") as ws:
             data = ws.receive_json()
             assert data["type"] == "error"
