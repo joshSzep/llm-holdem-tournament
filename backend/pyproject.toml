@@ -1,0 +1,51 @@
+[project]
+name = "llm-holdem"
+version = "0.1.0"
+description = "LLM Hold'Em Tournament — Texas Hold'Em poker with LLM-powered opponents"
+readme = "README.md"
+authors = [
+    { name = "Joshua Szepietowski", email = "joshSzep@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.34.0",
+    "websockets>=14.0",
+    "pydantic>=2.10.0",
+    "pydantic-ai>=0.1.0",
+    "sqlmodel>=0.0.22",
+    "aiosqlite>=0.20.0",
+    "treys>=0.1.8",
+    "logfire>=3.0.0",
+    "python-dotenv>=1.0.0",
+    "pydantic-settings>=2.12.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "httpx>=0.28.0",
+    "ruff>=0.9.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.18,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "--cov=llm_holdem --cov-report=term-missing --cov-fail-under=80"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "SIM", "TCH", "RUF"]
+
+[tool.ruff.format]
+quote-style = "double"
