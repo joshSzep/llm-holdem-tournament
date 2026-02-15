@@ -170,80 +170,80 @@ This roadmap breaks the project into **6 phases**, each building on the previous
 **Goal**: Integrate Pydantic AI to make AI opponents that actually play poker and talk. Replace placeholder random actions with real LLM decisions.
 
 ### 3.1 Agent Profile Definitions
-- [ ] Design the agent profile schema (`AgentProfile` model)
-- [ ] Create initial set of 30+ agent profiles with:
+- [x] Design the agent profile schema (`AgentProfile` model)
+- [x] Create initial set of 30+ agent profiles with:
   - Unique names, backstory/flavor text
   - Model assignments across providers (OpenAI, Anthropic, Google, etc.)
   - Personality dimensions (play style, talk style, risk tolerance, bluffing)
-- [ ] Create system prompt templates for action decisions
-- [ ] Create system prompt templates for chat/table talk
-- [ ] Write tests for profile loading and validation
+- [x] Create system prompt templates for action decisions
+- [x] Create system prompt templates for chat/table talk
+- [x] Write tests for profile loading and validation
 
 ### 3.2 Agent Registry
-- [ ] Implement agent registry that loads all profiles
-- [ ] Implement provider detection (check which API keys are configured)
-- [ ] Filter roster to only include agents with available providers
-- [ ] Expose filtered roster via REST API (`GET /api/agents`)
-- [ ] Write tests for registry filtering logic
+- [x] Implement agent registry that loads all profiles
+- [x] Implement provider detection (check which API keys are configured)
+- [x] Filter roster to only include agents with available providers
+- [x] Expose filtered roster via REST API (`GET /api/agents`)
+- [x] Write tests for registry filtering logic
 
 ### 3.3 Prompt Builder
-- [ ] Implement structured game context builder
+- [x] Implement structured game context builder
   - Format hole cards, community cards, pot, stacks, betting history
-- [ ] Implement hand history formatter
-- [ ] Implement recent chat formatter
-- [ ] Write tests for prompt building output
+- [x] Implement hand history formatter
+- [x] Implement recent chat formatter
+- [x] Write tests for prompt building output
 
 ### 3.4 Prompt Validator (Information Integrity)
-- [ ] Implement sanitized view builder (strip opponent hole cards)
-- [ ] Implement validation assertions:
+- [x] Implement sanitized view builder (strip opponent hole cards)
+- [x] Implement validation assertions:
   - No opponent hole cards present
   - Only public information + agent's own cards
   - No hidden state leaked
-- [ ] Make validator a mandatory gate before every LLM call
-- [ ] Write thorough tests for validation (positive and negative cases)
+- [x] Make validator a mandatory gate before every LLM call
+- [x] Write thorough tests for validation (positive and negative cases)
   - Ensure validation catches intentional leaks in test fixtures
 
 ### 3.5 Context Window Manager
-- [ ] Build model context window size registry
-- [ ] Implement token estimation for prompts
-- [ ] Implement oldest-first hand history truncation
-- [ ] Ensure current hand + recent history always preserved
-- [ ] Write tests for truncation behavior near various context limits
+- [x] Build model context window size registry
+- [x] Implement token estimation for prompts
+- [x] Implement oldest-first hand history truncation
+- [x] Ensure current hand + recent history always preserved
+- [x] Write tests for truncation behavior near various context limits
 
 ### 3.6 Action Agent (Game Decisions)
-- [ ] Implement Pydantic AI agent for poker decisions
+- [x] Implement Pydantic AI agent for poker decisions
   - Input: sanitized game state + personality prompt
   - Output: structured `PokerAction` (action + amount + reasoning)
-- [ ] Integrate with game engine (replace placeholder random actions)
-- [ ] Implement invalid action retry logic
+- [x] Integrate with game engine (replace placeholder random actions)
+- [x] Implement invalid action retry logic
   - Send error explanation, re-ask LLM
   - Fallback to check/fold after retry failure
-- [ ] Implement error handling with exponential backoff
+- [x] Implement error handling with exponential backoff
   - Network errors, rate limits → retry
   - All retries failed → auto-fold
-- [ ] Integrate with 30-second turn timer
-- [ ] Write tests with mocked LLM responses
+- [x] Integrate with 30-second turn timer
+- [x] Write tests with mocked LLM responses
 
 ### 3.7 Chat Agent (Reactive Table Talk)
-- [ ] Implement Pydantic AI agent for chat/table talk
+- [x] Implement Pydantic AI agent for chat/table talk
   - Input: game event context + personality prompt
   - Output: structured `ChatResponse` (message or None)
-- [ ] Implement event trigger system:
+- [x] Implement event trigger system:
   - Define key events: all-in, showdown, elimination, big pot, human chat
   - After each trigger, select which agents get a chat opportunity
   - Personality + randomness controls who speaks
-- [ ] Implement chat throttling (prevent spam)
-- [ ] Integrate chat messages into WebSocket broadcast
-- [ ] Persist chat messages to database
-- [ ] Write tests with mocked LLM responses
+- [x] Implement chat throttling (prevent spam)
+- [x] Integrate chat messages into WebSocket broadcast
+- [x] Persist chat messages to database
+- [x] Write tests with mocked LLM responses
 
 ### 3.8 Cost Tracking
-- [ ] Capture token usage from Pydantic AI responses
-- [ ] Estimate cost based on model pricing
-- [ ] Persist cost records to database
-- [ ] Implement cumulative cost calculation
-- [ ] Expose cost data via REST API and WebSocket
-- [ ] Write tests for cost tracking accuracy
+- [x] Capture token usage from Pydantic AI responses
+- [x] Estimate cost based on model pricing
+- [x] Persist cost records to database
+- [x] Implement cumulative cost calculation
+- [x] Expose cost data via REST API and WebSocket
+- [x] Write tests for cost tracking accuracy
 
 ---
 

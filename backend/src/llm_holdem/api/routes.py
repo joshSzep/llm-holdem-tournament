@@ -8,6 +8,7 @@ from fastapi import Depends
 from fastapi import HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from llm_holdem.agents.registry import AgentRegistry
 from llm_holdem.api.schemas import ActionSummary
 from llm_holdem.api.schemas import AgentListResponse
 from llm_holdem.api.schemas import AgentSummary
@@ -37,35 +38,23 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api")
 
+# ─── Agent Registry (singleton) ──────────────────────
 
-# ─── Stub Agent Data ──────────────────────────────────
+_agent_registry: AgentRegistry | None = None
 
-_STUB_AGENTS: list[AgentSummary] = [
-    AgentSummary(
-        id="agent-tight-tony",
-        name="Tight Tony",
-        avatar_url="/avatars/tight-tony.png",
-        provider="openai",
-        model="gpt-4o",
-        backstory="A conservative player who only plays premium hands.",
-    ),
-    AgentSummary(
-        id="agent-bluff-betty",
-        name="Bluff Betty",
-        avatar_url="/avatars/bluff-betty.png",
-        provider="anthropic",
-        model="claude-sonnet-4-20250514",
-        backstory="Lives for the bluff. Will bet big with nothing.",
-    ),
-    AgentSummary(
-        id="agent-math-mike",
-        name="Math Mike",
-        avatar_url="/avatars/math-mike.png",
-        provider="google",
-        model="gemini-2.0-flash",
-        backstory="Plays by the numbers. Calculates pot odds in milliseconds.",
-    ),
-]
+
+def get_agent_registry() -> AgentRegistry:
+    """Get or create the agent registry singleton."""
+    global _agent_registry  # noqa: PLW0603
+    if _agent_registry is None:
+        _agent_registry = AgentRegistry()
+    return _agent_registry
+
+
+def set_agent_registry(registry: AgentRegistry) -> None:
+    """Set the agent registry (for testing)."""
+    global _agent_registry  # noqa: PLW0603
+    _agent_registry = registry
 
 
 # ─── Agent Routes ─────────────────────────────────────
@@ -73,17 +62,37 @@ _STUB_AGENTS: list[AgentSummary] = [
 
 @router.get("/agents", response_model=AgentListResponse)
 async def list_agents() -> AgentListResponse:
-    """List available agents (stub data for now)."""
-    return AgentListResponse(agents=_STUB_AGENTS)
+    """List available agents filtered by configured API keys."""
+    registry = get_agent_registry()
+    agents = [
+        AgentSummary(
+            id=p.id,
+            name=p.name,
+            avatar_url=f"/avatars/{p.avatar}",
+            provider=p.provider,
+            model=p.model.split(":")[-1] if ":" in p.model else p.model,
+            backstory=p.backstory,
+        )
+        for p in registry.available_profiles
+    ]
+    return AgentListResponse(agents=agents)
 
 
 @router.get("/agents/{agent_id}", response_model=AgentSummary)
 async def get_agent(agent_id: str) -> AgentSummary:
     """Get agent profile details."""
-    for agent in _STUB_AGENTS:
-        if agent.id == agent_id:
-            return agent
-    raise HTTPException(status_code=404, detail=f"Agent '{agent_id}' not found")
+    registry = get_agent_registry()
+    profile = registry.get_profile(agent_id)
+    if not profile:
+        raise HTTPException(status_code=404, detail=f"Agent '{agent_id}' not found")
+    return AgentSummary(
+        id=profile.id,
+        name=profile.name,
+        avatar_url=f"/avatars/{profile.avatar}",
+        provider=profile.provider,
+        model=profile.model.split(":")[-1] if ":" in profile.model else profile.model,
+        backstory=profile.backstory,
+    )
 
 
 # ─── Game Routes ──────────────────────────────────────
@@ -183,14 +192,12 @@ async def create_new_game(
         )
 
     # Create AI players
+    registry = get_agent_registry()
     for i, agent_id in enumerate(request.agent_ids):
         seat = i + 1 if request.mode == "player" else i
-        # Find agent name from stubs
-        agent_name = agent_id
-        for stub in _STUB_AGENTS:
-            if stub.id == agent_id:
-                agent_name = stub.name
-                break
+        # Find agent name from registry
+        profile = registry.get_profile(agent_id)
+        agent_name = profile.name if profile else agent_id
 
         await create_game_player(
             session,

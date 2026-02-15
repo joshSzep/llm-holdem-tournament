@@ -81,13 +81,14 @@ class TestAgents:
         assert resp.status_code == 200
         data = resp.json()
         assert "agents" in data
-        assert len(data["agents"]) == 3  # Stub data
+        # Without API keys, only ollama agents are available (5)
+        assert len(data["agents"]) >= 5
 
     async def test_get_agent_found(self, client: AsyncClient) -> None:
-        resp = await client.get("/api/agents/agent-tight-tony")
+        resp = await client.get("/api/agents/hometown-henry")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["name"] == "Tight Tony"
+        assert data["name"] == "Hometown Henry"
 
     async def test_get_agent_not_found(self, client: AsyncClient) -> None:
         resp = await client.get("/api/agents/nonexistent")
@@ -103,7 +104,7 @@ class TestGames:
     async def test_create_game(self, client: AsyncClient) -> None:
         resp = await client.post("/api/games", json={
             "mode": "player",
-            "agent_ids": ["agent-tight-tony", "agent-bluff-betty"],
+            "agent_ids": ["hometown-henry", "rookie-rachel"],
             "starting_chips": 1000,
             "num_players": 3,
         })
@@ -115,7 +116,7 @@ class TestGames:
     async def test_create_spectator_game(self, client: AsyncClient) -> None:
         resp = await client.post("/api/games", json={
             "mode": "spectator",
-            "agent_ids": ["agent-tight-tony", "agent-bluff-betty"],
+            "agent_ids": ["hometown-henry", "rookie-rachel"],
             "starting_chips": 500,
             "num_players": 2,
         })
@@ -130,7 +131,7 @@ class TestGames:
         # Create a game first
         await client.post("/api/games", json={
             "mode": "player",
-            "agent_ids": ["agent-tight-tony"],
+            "agent_ids": ["hometown-henry"],
             "starting_chips": 1000,
             "num_players": 2,
         })
@@ -144,7 +145,7 @@ class TestGames:
     async def test_get_game_detail(self, client: AsyncClient) -> None:
         create_resp = await client.post("/api/games", json={
             "mode": "player",
-            "agent_ids": ["agent-tight-tony"],
+            "agent_ids": ["hometown-henry"],
             "starting_chips": 1000,
             "num_players": 2,
         })
@@ -174,7 +175,7 @@ class TestHands:
     async def test_get_hands_empty(self, client: AsyncClient) -> None:
         create_resp = await client.post("/api/games", json={
             "mode": "player",
-            "agent_ids": ["agent-tight-tony"],
+            "agent_ids": ["hometown-henry"],
             "starting_chips": 1000,
             "num_players": 2,
         })
@@ -191,7 +192,7 @@ class TestHands:
     async def test_get_hand_not_found(self, client: AsyncClient) -> None:
         create_resp = await client.post("/api/games", json={
             "mode": "player",
-            "agent_ids": ["agent-tight-tony"],
+            "agent_ids": ["hometown-henry"],
             "starting_chips": 1000,
             "num_players": 2,
         })
