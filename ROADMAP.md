@@ -11,87 +11,87 @@ This roadmap breaks the project into **6 phases**, each building on the previous
 **Goal**: Set up the project infrastructure and build the core poker game engine with no LLM or UI dependencies. This is the bedrock — all game logic is built and thoroughly tested here.
 
 ### 1.1 Project Scaffolding
-- [ ] Initialize monorepo structure (`frontend/`, `backend/`)
-- [ ] Set up `backend/` with `uv` and `pyproject.toml`
+- [x] Initialize monorepo structure (`frontend/`, `backend/`)
+- [x] Set up `backend/` with `uv` and `pyproject.toml`
   - Python 3.12+, FastAPI, SQLModel, pydantic-ai, treys, logfire
-- [ ] Set up `frontend/` with `pnpm` and Vite + React + TypeScript
+- [x] Set up `frontend/` with `pnpm` and Vite + React + TypeScript
   - Zustand, Framer Motion, ESLint, Prettier
-- [ ] Create `justfile` with initial commands:
+- [x] Create `justfile` with initial commands:
   - `just dev` — start both frontend and backend
   - `just test` — run all tests
   - `just lint` — run all linters
   - `just format` — run all formatters
-- [ ] Set up `.pre-commit-config.yaml` with ruff, prettier, eslint hooks
-- [ ] Create `.env.example` with all environment variable templates
-- [ ] Set up backend structured logging + Logfire integration
-- [ ] Set up pytest with coverage enforcement (≥80%)
-- [ ] Set up vitest with coverage enforcement (≥80%)
-- [ ] Create `README.md` with setup instructions
+- [x] Set up `.pre-commit-config.yaml` with ruff, prettier, eslint hooks
+- [x] Create `.env.example` with all environment variable templates
+- [x] Set up backend structured logging + Logfire integration
+- [x] Set up pytest with coverage enforcement (≥80%)
+- [x] Set up vitest with coverage enforcement (≥80%)
+- [x] Create `README.md` with setup instructions
 
 ### 1.2 Card & Deck Primitives
-- [ ] Implement `Card` model (rank + suit)
-- [ ] Implement `Deck` class (52 cards, shuffle, deal)
-- [ ] Write comprehensive tests for deck operations
+- [x] Implement `Card` model (rank + suit)
+- [x] Implement `Deck` class (52 cards, shuffle, deal)
+- [x] Write comprehensive tests for deck operations
   - Full deck integrity, no duplicates, proper shuffle randomness
 
 ### 1.3 Hand Evaluator
-- [ ] Integrate `treys` library for hand evaluation
-- [ ] Create `evaluator.py` wrapper with clean API
+- [x] Integrate `treys` library for hand evaluation
+- [x] Create `evaluator.py` wrapper with clean API
   - `evaluate_hand(hole_cards, community_cards) -> HandResult`
   - `HandResult` includes rank, rank name (e.g., "Full House, Kings full of Sevens"), comparison value
-- [ ] Implement hand comparison for determining winners
-- [ ] Write tests for all hand types (high card through royal flush)
-- [ ] Write tests for tie-breaking scenarios
-- [ ] Write tests for split pot hand comparisons
+- [x] Implement hand comparison for determining winners
+- [x] Write tests for all hand types (high card through royal flush)
+- [x] Write tests for tie-breaking scenarios
+- [x] Write tests for split pot hand comparisons
 
 ### 1.4 Pot Manager
-- [ ] Implement main pot tracking
-- [ ] Implement side pot calculation for all-in scenarios
+- [x] Implement main pot tracking
+- [x] Implement side pot calculation for all-in scenarios
   - Multiple all-ins at different stack sizes
-- [ ] Implement pot distribution to winners
-- [ ] Implement split pot distribution (odd chip rule)
-- [ ] Write extensive tests for complex pot scenarios
+- [x] Implement pot distribution to winners
+- [x] Implement split pot distribution (odd chip rule)
+- [x] Write extensive tests for complex pot scenarios
 
 ### 1.5 Blind Manager
-- [ ] Implement blind structure (doubling every 10 hands)
+- [x] Implement blind structure (doubling every 10 hands)
   - 10/20 → 20/40 → 40/80 → 75/150 → 150/300 → 300/600 → 500/1000 → 1000/2000
-- [ ] Implement blind posting logic
-- [ ] Implement blind escalation tracking (hand counter)
-- [ ] Write tests for blind progression and posting
+- [x] Implement blind posting logic
+- [x] Implement blind escalation tracking (hand counter)
+- [x] Write tests for blind progression and posting
 
 ### 1.6 Turn Manager
-- [ ] Implement turn order logic for all betting rounds
+- [x] Implement turn order logic for all betting rounds
   - Pre-flop: left of big blind, wrapping around
   - Post-flop: left of dealer
-- [ ] Implement standard heads-up rules (dealer=SB, acts first pre-flop, last post-flop)
-- [ ] Handle skipping folded/all-in/eliminated players
-- [ ] Implement dealer button rotation
-- [ ] Write tests for all turn order scenarios (3-6 players, heads-up)
+- [x] Implement standard heads-up rules (dealer=SB, acts first pre-flop, last post-flop)
+- [x] Handle skipping folded/all-in/eliminated players
+- [x] Implement dealer button rotation
+- [x] Write tests for all turn order scenarios (3-6 players, heads-up)
 
 ### 1.7 Betting Manager
-- [ ] Implement action validation
+- [x] Implement action validation
   - Valid actions based on current state (when can you check vs. must call, min raise, etc.)
-- [ ] Implement fold, check, call, raise/bet actions
+- [x] Implement fold, check, call, raise/bet actions
   - Apply to game state, update pot, current bet, player bet
-- [ ] Implement all-in logic (partial calls, under-raises)
-- [ ] Implement betting round completion detection
-- [ ] Write tests for all action types and edge cases
+- [x] Implement all-in logic (partial calls, under-raises)
+- [x] Implement betting round completion detection
+- [x] Write tests for all action types and edge cases
 
 ### 1.8 Game Engine (Core Loop)
-- [ ] Implement `GameEngine` class that orchestrates a complete hand:
+- [x] Implement `GameEngine` class that orchestrates a complete hand:
   - Dealer button, blinds, deal, betting rounds, showdown, pot distribution
-- [ ] Implement game state model (`GameState`, `PlayerState`, etc.)
-- [ ] Implement phase transitions (pre-flop → flop → turn → river → showdown)
-- [ ] Handle early hand endings (everyone folds to one player)
-- [ ] Handle showdown with hand evaluation and winner determination
-- [ ] Write integration tests for complete hands (various scenarios)
+- [x] Implement game state model (`GameState`, `PlayerState`, etc.)
+- [x] Implement phase transitions (pre-flop → flop → turn → river → showdown)
+- [x] Handle early hand endings (everyone folds to one player)
+- [x] Handle showdown with hand evaluation and winner determination
+- [x] Write integration tests for complete hands (various scenarios)
 
 ### 1.9 Tournament Manager
-- [ ] Implement player elimination (0 chips)
-- [ ] Implement tournament completion detection (1 player remaining)
-- [ ] Implement final standings tracking
-- [ ] Implement game statistics collection (biggest pot, best hand, etc.)
-- [ ] Write tests for tournament progression and edge cases
+- [x] Implement player elimination (0 chips)
+- [x] Implement tournament completion detection (1 player remaining)
+- [x] Implement final standings tracking
+- [x] Implement game statistics collection (biggest pot, best hand, etc.)
+- [x] Write tests for tournament progression and edge cases
 
 ---
 
