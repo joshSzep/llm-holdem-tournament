@@ -178,7 +178,7 @@ async def get_ai_action(
         try:
             result = await agent.run(prompt)
             action = result.response
-            usage = result.usage
+            usage = result.usage()
 
             # Accumulate usage
             total_usage.input_tokens += usage.input_tokens

@@ -115,7 +115,7 @@ class TestGetAiAction:
         """Create a mock Pydantic AI result."""
         result = MagicMock()
         result.response = PokerAction(action="call", reasoning="Good pot odds")
-        result.usage = Usage(input_tokens=100, output_tokens=20, requests=1)
+        result.usage = MagicMock(return_value=Usage(input_tokens=100, output_tokens=20, requests=1))
         return result
 
     async def test_successful_action(self, mock_agent_result: MagicMock) -> None:
@@ -200,11 +200,11 @@ class TestGetAiAction:
         """Agent retries when LLM returns an invalid action."""
         invalid_result = MagicMock()
         invalid_result.response = PokerAction(action="raise", amount=5)  # Below min
-        invalid_result.usage = Usage(input_tokens=50, output_tokens=10, requests=1)
+        invalid_result.usage = MagicMock(return_value=Usage(input_tokens=50, output_tokens=10, requests=1))
 
         valid_result = MagicMock()
         valid_result.response = PokerAction(action="call", reasoning="OK fine")
-        valid_result.usage = Usage(input_tokens=80, output_tokens=15, requests=1)
+        valid_result.usage = MagicMock(return_value=Usage(input_tokens=80, output_tokens=15, requests=1))
 
         with patch("llm_holdem.agents.action_agent._create_action_agent") as mock_create:
             mock_agent = AsyncMock()
@@ -234,7 +234,7 @@ class TestGetAiAction:
             captured_prompt = prompt
             result = MagicMock()
             result.response = PokerAction(action="check")
-            result.usage = Usage(input_tokens=10, output_tokens=5, requests=1)
+            result.usage = MagicMock(return_value=Usage(input_tokens=10, output_tokens=5, requests=1))
             return result
 
         with patch("llm_holdem.agents.action_agent._create_action_agent") as mock_create:

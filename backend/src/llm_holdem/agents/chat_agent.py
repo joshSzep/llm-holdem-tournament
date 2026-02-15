@@ -177,7 +177,7 @@ async def get_chat_response(
     try:
         result = await agent.run(prompt)
         response = result.response
-        usage = result.usage
+        usage = result.usage()
 
         if response.message:
             logger.info(

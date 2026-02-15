@@ -131,7 +131,7 @@ class TestGetChatResponse:
         """Successful chat response."""
         mock_result = MagicMock()
         mock_result.response = ChatResponse(message="Nice hand!")
-        mock_result.usage = Usage(input_tokens=50, output_tokens=10, requests=1)
+        mock_result.usage = MagicMock(return_value=Usage(input_tokens=50, output_tokens=10, requests=1))
 
         with patch("llm_holdem.agents.chat_agent._create_chat_agent") as mock_create:
             mock_agent = AsyncMock()
@@ -184,7 +184,7 @@ class TestTriggerChatResponses:
         def make_mock_result(msg: str) -> MagicMock:
             result = MagicMock()
             result.response = ChatResponse(message=msg)
-            result.usage = Usage(input_tokens=30, output_tokens=5, requests=1)
+            result.usage = MagicMock(return_value=Usage(input_tokens=30, output_tokens=5, requests=1))
             return result
 
         with patch("llm_holdem.agents.chat_agent.get_chat_response") as mock_get:

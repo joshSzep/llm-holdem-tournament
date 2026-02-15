@@ -29,6 +29,28 @@ export class WebSocketService {
    * Connect to the game WebSocket.
    */
   connect(gameId: number): void {
+    // Clean up any existing connection before creating a new one.
+    // This prevents stale onclose handlers from scheduling reconnects
+    // (e.g. when React StrictMode remounts: disconnect → connect).
+    if (this.reconnectTimeout) {
+      clearTimeout(this.reconnectTimeout);
+      this.reconnectTimeout = null;
+    }
+    if (this.ws) {
+      // Detach handlers so the old socket's onclose doesn't trigger reconnect
+      this.ws.onclose = null;
+      this.ws.onmessage = null;
+      this.ws.onerror = null;
+      this.ws.onopen = null;
+      if (
+        this.ws.readyState === WebSocket.OPEN ||
+        this.ws.readyState === WebSocket.CONNECTING
+      ) {
+        this.ws.close();
+      }
+      this.ws = null;
+    }
+
     this.intentionalClose = false;
     this.gameId = gameId;
     this.reconnectAttempt = 0;
@@ -92,14 +114,18 @@ export class WebSocketService {
     if (this.gameId === null) return;
 
     const url = `${WS_BASE}/ws/game/${this.gameId}`;
-    this.ws = new WebSocket(url);
+    const ws = new WebSocket(url);
+    this.ws = ws;
 
-    this.ws.onopen = () => {
+    ws.onopen = () => {
+      // Only handle if this is still the active connection
+      if (this.ws !== ws) return;
       this.reconnectAttempt = 0;
       this.notifyConnectionHandlers(true);
     };
 
-    this.ws.onmessage = (event: MessageEvent) => {
+    ws.onmessage = (event: MessageEvent) => {
+      if (this.ws !== ws) return;
       try {
         const message = JSON.parse(event.data as string) as ServerMessage;
         for (const handler of this.messageHandlers) {
@@ -110,14 +136,16 @@ export class WebSocketService {
       }
     };
 
-    this.ws.onclose = () => {
+    ws.onclose = () => {
+      // Only handle if this is still the active connection
+      if (this.ws !== ws) return;
       this.notifyConnectionHandlers(false);
       if (!this.intentionalClose) {
         this.scheduleReconnect();
       }
     };
 
-    this.ws.onerror = () => {
+    ws.onerror = () => {
       // onclose will fire after onerror
     };
   }
